@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "914222314101",
+    "project_id": "hangout-ef87b",
+    "storage_bucket": "hangout-ef87b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914222314101:android:f85fe22cd3d231cf0cbe3c",
+        "android_client_info": {
+          "package_name": "hangout.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZAzwSuoMwoKu0faaH9j4W0ZkPuLJg51Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
