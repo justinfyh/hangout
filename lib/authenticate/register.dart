@@ -1,41 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:hangout/authenticate/register.dart';
 import '../services/auth.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
+      String email = _emailController.text;
       String password = _passwordController.text;
-      _auth.signInEmailPassword(username, password);
+      _auth.registerEmailPassword(email, password);
+      Navigator.pop(context);
     }
   }
 
-  // final StorageService _storage = StorageService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Form'),
+        title: Text('Register Form'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -54,6 +58,16 @@ class _LoginState extends State<Login> {
                 },
               ),
               TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
@@ -64,17 +78,31 @@ class _LoginState extends State<Login> {
                   return null;
                 },
               ),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(labelText: 'Confirm Password'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your password';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submit,
-                child: Text('Login'),
+                child: Text('Register'),
               ),
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Register()));
-                  },
-                  child: Text('Register'))
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Back to Login'),
+              ),
             ],
           ),
         ),

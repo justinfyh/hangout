@@ -12,6 +12,18 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
+  Future registerEmailPassword(email, password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
+      return user;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future signInEmailPassword(emailAddress, password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -20,11 +32,6 @@ class AuthService {
       print(result);
       return user;
     } catch (e) {
-      // if (e.code == 'user-not-found') {
-      //   print('No user found for that email.');
-      // } else if (e.code == 'wrong-password') {
-      //   print('Wrong password provided for that user.');
-      // }
       print(e.toString());
       return null;
     }

@@ -16,7 +16,9 @@ class Home extends StatelessWidget {
       appBar: AppBar(),
       body: Column(
         children: [
-          ElevatedButton(onPressed: _logout, child: const Text('Log Out'))
+          Center(
+              child: ElevatedButton(
+                  onPressed: _logout, child: const Text('Log Out')))
         ],
       ),
     );
