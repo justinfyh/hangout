@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '914222314101',
     projectId: 'hangout-ef87b',
     storageBucket: 'hangout-ef87b.appspot.com',
+    androidClientId: '914222314101-ocve5uqhkbake63ov4k3s2hdbvsh52ma.apps.googleusercontent.com',
     iosClientId: '914222314101-cr66al3e1llscj0dup6manihtb6tej8k.apps.googleusercontent.com',
     iosBundleId: 'com.example.hangout',
   );

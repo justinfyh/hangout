@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "914222314101-ocve5uqhkbake63ov4k3s2hdbvsh52ma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hangout.dev",
+            "certificate_hash": "cbff604087bfbff58a9e0026bf16e79d6bb3af4b"
+          }
+        },
+        {
           "client_id": "914222314101-0b2dqp91r6miehn6dfp4b1lhfhlj7rcb.apps.googleusercontent.com",
           "client_type": 3
         }

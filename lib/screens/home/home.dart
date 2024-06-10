@@ -26,7 +26,7 @@ class Home extends StatelessWidget {
           children: [
             Text(email ?? "no user logged in"),
             Center(
-                child: ElevatedButton(
+                child: FilledButton(
                     onPressed: () async {
                       await _auth.signOut();
                     },
