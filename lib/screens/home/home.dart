@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hangout/components/navigation-bar.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/screens/home/event_explore.dart';
 import 'package:hangout/screens/home/event_list.dart';
@@ -64,6 +65,7 @@ class Home extends StatelessWidget {
             ],
           ),
         ),
+        bottomNavigationBar: CustomNavigationBar(),
       ),
     );
   }
