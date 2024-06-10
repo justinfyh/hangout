@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hangout/authenticate/register.dart';
-import '../services/auth.dart';
+import 'package:hangout/screens/authenticate/register.dart';
+import '../../services/auth.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
+
+  // final void Function() toggleView;
+
+  // const Login({super.key, required this.toggleView});
 
   @override
   State<Login> createState() => _LoginState();
@@ -22,11 +27,14 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
       String password = _passwordController.text;
-      _auth.signInEmailPassword(username, password);
+      User? user = await _auth.signInEmailPassword(username, password);
+      if (user?.email != null) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -69,12 +77,12 @@ class _LoginState extends State<Login> {
                 onPressed: _submit,
                 child: Text('Login'),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Register()));
-                  },
-                  child: Text('Register'))
+              // ElevatedButton(
+              //     onPressed: () {
+              //       Navigator.push(context,
+              //           MaterialPageRoute(builder: (context) => Register()));
+              //     },
+              //     child: Text('Register'))
             ],
           ),
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/auth.dart';
+import '../../services/auth.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -27,7 +27,7 @@ class _RegisterState extends State<Register> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      String username = _usernameController.text;
+      // String username = _usernameController.text;
       String email = _emailController.text;
       String password = _passwordController.text;
       _auth.registerEmailPassword(email, password);
@@ -97,12 +97,12 @@ class _RegisterState extends State<Register> {
                 onPressed: _submit,
                 child: Text('Register'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Back to Login'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   child: Text('Back to Login'),
+              // ),
             ],
           ),
         ),
