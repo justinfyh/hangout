@@ -83,8 +83,16 @@ class _LoginState extends State<Login> {
                 onPressed: _submit,
                 child: Text('Login'),
               ),
-              ElevatedButton(
-                  onPressed: _handleGoogleSignIn, child: Text('Google'))
+              // IconButton(
+              //     onPressed: () {},
+              //     icon: Image.asset('assets/icons/google.png')),
+              // ElevatedButton(
+              //     onPressed: _handleGoogleSignIn, child: Text('Google')),
+              ElevatedButton.icon(
+                onPressed: _handleGoogleSignIn,
+                icon: Image.asset('assets/icons/google.png'),
+                label: Text('Continue with Google'),
+              )
             ],
           ),
         ),
