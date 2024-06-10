@@ -38,6 +38,12 @@ class _LoginState extends State<Login> {
     }
   }
 
+  void _handleGoogleSignIn() async {
+    try {
+      await _auth.signInWithGoogle();
+    } catch (e) {}
+  }
+
   // final StorageService _storage = StorageService();
   @override
   Widget build(BuildContext context) {
@@ -77,12 +83,8 @@ class _LoginState extends State<Login> {
                 onPressed: _submit,
                 child: Text('Login'),
               ),
-              // ElevatedButton(
-              //     onPressed: () {
-              //       Navigator.push(context,
-              //           MaterialPageRoute(builder: (context) => Register()));
-              //     },
-              //     child: Text('Register'))
+              ElevatedButton(
+                  onPressed: _handleGoogleSignIn, child: Text('Google'))
             ],
           ),
         ),

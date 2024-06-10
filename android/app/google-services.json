@@ -12,7 +12,12 @@
           "package_name": "hangout.dev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "914222314101-0b2dqp91r6miehn6dfp4b1lhfhlj7rcb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBZAzwSuoMwoKu0faaH9j4W0ZkPuLJg51Q"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914222314101-0b2dqp91r6miehn6dfp4b1lhfhlj7rcb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "914222314101-cr66al3e1llscj0dup6manihtb6tej8k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hangout"
+              }
+            }
+          ]
         }
       }
     }
