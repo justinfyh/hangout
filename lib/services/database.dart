@@ -14,10 +14,18 @@ class DatabaseService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  Future<void> addFriend(String uid) async {
+    try {
+      await usersCollection.doc(uid).update({
+        'friends': FieldValue.arrayUnion(['cacaf4SJDuOpRlpB0EasIdjojlJ2'])
+      });
+    } catch (e) {}
+  }
+
   Future<void> createEvent() async {
     try {
       await eventsCollection.add({
-        'event_name': 'Ram Raids',
+        'event_name': 'Party',
         'location': 'Albany Mall',
         'date': '10.06.2024',
         'time': '1200',

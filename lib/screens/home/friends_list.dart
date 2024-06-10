@@ -24,8 +24,8 @@ class FriendSection extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 30,
-                      backgroundImage: AssetImage(
-                          'assets/friend_$index.jpg'), // Replace with your own images
+                      // backgroundImage: AssetImage(
+                      //     'assets/friend_$index.jpg'), // Replace with your own images
                     ),
                     SizedBox(height: 8),
                     Text('Friend Name', style: TextStyle(fontSize: 12)),

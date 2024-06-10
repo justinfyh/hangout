@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
-import 'package:hangout/screens/home/event_tile.dart';
 import 'package:provider/provider.dart';
 
 class EventList extends StatefulWidget {

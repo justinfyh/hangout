@@ -13,9 +13,6 @@ class AuthService {
         print(user.uid);
       }
     });
-    // return _auth
-    //     .authStateChanges()
-    //     .map((User? user) => _userFromFirebaseUser(user));
     return _auth
         .authStateChanges()
         .map((User? user) => _userFromCredUser(user));
@@ -25,21 +22,24 @@ class AuthService {
     return user != null ? UserModel(uid: user.uid) : null;
   }
 
+  Future<UserModel?> getUserInfo(String uid) async {
+    try {
+      DocumentSnapshot doc = await _db.collection('users').doc(uid).get();
+      if (doc.exists) {
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+      }
+      return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future registerEmailPassword(name, email, password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      // Create a new user object
-      // UserModel newUser = UserModel(
-      //   uid: user!.uid,
-      //   // name: name,
-      //   // email: email,
-      //   // profileImageUrl: '',
-      //   // friends: [],
-      //   // savedEvents: [],
-      // );
-      // await newUser.saveUser();
       if (user != null) {
         UserModel newUser = UserModel(uid: user.uid, name: name, email: email);
         await _db.collection('users').doc(user.uid).set(newUser.toMap());

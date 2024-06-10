@@ -22,7 +22,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
-    print(user);
+    print(user?.email);
     String? uid = user?.uid;
     return StreamProvider<List<Event>?>.value(
       value: DatabaseService().events,
@@ -62,6 +62,12 @@ class Home extends StatelessWidget {
                   child: ElevatedButton(
                       onPressed: () async {
                         await _database.createEvent();
+                      },
+                      child: const Text('Create Event'))),
+              Center(
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        await _database.addFriend(user!.uid);
                       },
                       child: const Text('Create Event'))),
             ],

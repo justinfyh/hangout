@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hangout/models/event.dart';
 
 class UserModel {
   String uid;
@@ -11,13 +12,15 @@ class UserModel {
   String? email;
   String? profileImageUrl;
 
-  UserModel(
-      {required this.uid,
-      this.name,
-      this.email,
-      this.profileImageUrl,
-      this.friends,
-      this.savedEvents});
+  UserModel({
+    required this.uid,
+    this.name,
+    this.email,
+    this.profileImageUrl,
+    List<String>? savedEvents,
+    List<String>? friends,
+  })  : savedEvents = savedEvents ?? [],
+        friends = friends ?? [];
 
   // UserModel({
   //   required this.uid,
@@ -62,6 +65,17 @@ class UserModel {
   //     savedEvents: List<String>.from(map['savedEvents']),
   //   );
   // }
+
+  static UserModel fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      uid: map['uid'],
+      name: map['name'],
+      email: map['email'],
+      profileImageUrl: map['profileImageUrl'],
+      savedEvents: List<String>.from(map['savedEvents']),
+      friends: List<String>.from(map['friends']),
+    );
+  }
 
   // Fetch user data from Firestore by uid
   // static Future<UserModel?> getUserById(String uid) async {
