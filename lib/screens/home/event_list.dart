@@ -25,7 +25,7 @@ class _EventListState extends State<EventList> {
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 3,
+        itemCount: events.length,
         itemBuilder: (context, index) {
           return Container(
             width: 150,
@@ -33,22 +33,39 @@ class _EventListState extends State<EventList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: AssetImage(
-                            'assets/event_$index.jpg'), // Replace with your own images
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
+                // Expanded(
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(8.0),
+                //       image: DecorationImage(
+                //         image: AssetImage(
+                //             'gs://hangout-ef87b.appspot.com/westfield-albany.jpg'), // Replace with your own images
+                //         fit: BoxFit.cover,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: 8),
+                Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/hangout-ef87b.appspot.com/o/westfield-albany.jpg?alt=media',
+                  // Specify your Firebase Storage URL here
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Text('Error loading image');
+                  },
+                ),
                 Text(events[index].name,
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Event Date and Time',
+                Text(events[index].location,
                     style: TextStyle(color: Colors.grey)),
               ],
             ),
