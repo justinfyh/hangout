@@ -18,20 +18,40 @@ class Landing extends StatelessWidget {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Organize. Invite. Enjoy. The Easy Way'),
+                const Text(
+                  'Organize. Invite. Enjoy.\nThe Easy Way',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
                 Image.asset('assets/images/mascot.png'),
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Login()));
-                    },
-                    child: Text('Log in')),
-                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()));
+                  },
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Color(0xffFF7A00)),
+                  ),
+                  child: const Text(
+                    'Log in',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextButton(
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Register()));
                     },
-                    child: Text('Join for free'))
+                    child: const Text(
+                      'Join for free',
+                      style: TextStyle(
+                          color: Color(0xffFF7A00),
+                          fontWeight: FontWeight.bold),
+                    ))
               ],
             ))));
   }

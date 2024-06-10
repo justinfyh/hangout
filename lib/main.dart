@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hangout/screens/wrapper.dart';
 import 'package:hangout/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,19 @@ class MainApp extends StatelessWidget {
     return StreamProvider<User?>.value(
       initialData: null,
       value: AuthService().user,
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: _buildTheme(Brightness.light),
         home: Wrapper(),
       ),
+    );
+  }
+
+  ThemeData _buildTheme(brightness) {
+    var baseTheme = ThemeData(brightness: brightness);
+
+    return baseTheme.copyWith(
+      textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
+      primaryColor: const Color(0xffFF7A00),
     );
   }
 }
