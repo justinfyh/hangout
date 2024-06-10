@@ -11,6 +11,9 @@ class DatabaseService {
   final CollectionReference eventsCollection =
       FirebaseFirestore.instance.collection('events');
 
+  final CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('users');
+
   Future<void> createEvent() async {
     try {
       await eventsCollection.add({

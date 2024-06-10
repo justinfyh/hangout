@@ -27,10 +27,10 @@ class _RegisterState extends State<Register> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      // String username = _usernameController.text;
+      String username = _usernameController.text;
       String email = _emailController.text;
       String password = _passwordController.text;
-      _auth.registerEmailPassword(email, password);
+      _auth.registerEmailPassword(username, email, password);
       Navigator.pop(context);
     }
   }

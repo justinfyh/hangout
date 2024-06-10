@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/authenticate/register.dart';
 import '../../services/auth.dart';
 
@@ -31,7 +32,7 @@ class _LoginState extends State<Login> {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
       String password = _passwordController.text;
-      User? user = await _auth.signInEmailPassword(username, password);
+      UserModel? user = await _auth.signInEmailPassword(username, password);
       if (user?.email != null) {
         Navigator.pop(context);
       }

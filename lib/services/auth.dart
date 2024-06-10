@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hangout/models/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,11 +14,21 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
-  Future registerEmailPassword(email, password) async {
+  Future registerEmailPassword(name, email, password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
+      // Create a new user object
+      UserModel newUser = UserModel(
+        uid: user!.uid,
+        name: name,
+        email: email,
+        profileImageUrl: '',
+        friends: [],
+        savedEvents: [],
+      );
+      await newUser.saveUser();
       return user;
     } catch (e) {
       print(e.toString());
@@ -25,13 +36,16 @@ class AuthService {
     }
   }
 
-  Future<User?> signInEmailPassword(emailAddress, password) async {
+  Future<UserModel?> signInEmailPassword(emailAddress, password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: emailAddress, password: password);
       User? user = result.user;
+      if (user != null) {
+        return await UserModel.getUserById(user.uid);
+      }
       print(result);
-      return user;
+      return null;
     } catch (e) {
       print(e.toString());
       return null;
