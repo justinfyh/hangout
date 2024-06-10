@@ -21,13 +21,40 @@ class _EventListState extends State<EventList> {
       );
     }
 
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: events.length,
-      itemBuilder: (context, index) {
-        return EventTile(event: events[index]);
-      },
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 150,
+            margin: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/event_$index.jpg'), // Replace with your own images
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(events[index].name,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Event Date and Time',
+                    style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

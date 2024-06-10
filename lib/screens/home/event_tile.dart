@@ -7,11 +7,38 @@ class EventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 0.8),
-      child: Card(
-        margin: const EdgeInsets.fromLTRB(20, 6, 20, 0),
-        child: Text('${event.name} where ${event.location}'),
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 1,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 150,
+            margin: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/event_$index.jpg'), // Replace with your own images
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(event.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Event Date and Time',
+                    style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

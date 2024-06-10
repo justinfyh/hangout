@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/screens/home/event_list.dart';
+import 'package:hangout/screens/home/event_month.dart';
+import 'package:hangout/screens/home/event_tabs.dart';
 import 'package:hangout/services/auth.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
@@ -21,9 +23,25 @@ class Home extends StatelessWidget {
       value: DatabaseService().events,
       initialData: null,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.menu, color: Colors.black),
+            onPressed: () {},
+          ),
+          title: Text('Hangout', style: TextStyle(color: Colors.black)),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.person, color: Colors.black),
+              onPressed: () {},
+            ),
+          ],
+        ),
         body: Column(
           children: [
+            EventTabs(),
+            MonthlyEvents(),
             Text(email ?? "no user logged in"),
             Center(
                 child: FilledButton(
