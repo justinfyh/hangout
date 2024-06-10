@@ -1,17 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hangout/models/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Stream<User?> get user {
+  Stream<UserModel?> get user {
     _auth.authStateChanges().listen((User? user) {
       if (user != null) {
         print(user.uid);
       }
     });
-    return _auth.authStateChanges();
+    // return _auth
+    //     .authStateChanges()
+    //     .map((User? user) => _userFromFirebaseUser(user));
+    return _auth
+        .authStateChanges()
+        .map((User? user) => _userFromCredUser(user));
+  }
+
+  UserModel? _userFromCredUser(User? user) {
+    return user != null ? UserModel(uid: user.uid) : null;
   }
 
   Future registerEmailPassword(name, email, password) async {
@@ -20,29 +31,34 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       // Create a new user object
-      UserModel newUser = UserModel(
-        uid: user!.uid,
-        name: name,
-        email: email,
-        profileImageUrl: '',
-        friends: [],
-        savedEvents: [],
-      );
-      await newUser.saveUser();
-      return user;
+      // UserModel newUser = UserModel(
+      //   uid: user!.uid,
+      //   // name: name,
+      //   // email: email,
+      //   // profileImageUrl: '',
+      //   // friends: [],
+      //   // savedEvents: [],
+      // );
+      // await newUser.saveUser();
+      if (user != null) {
+        UserModel newUser = UserModel(uid: user.uid, name: name, email: email);
+        await _db.collection('users').doc(user.uid).set(newUser.toMap());
+        return newUser;
+      }
+      return null;
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
 
-  Future<UserModel?> signInEmailPassword(emailAddress, password) async {
+  Future<User?> signInEmailPassword(emailAddress, password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: emailAddress, password: password);
       User? user = result.user;
       if (user != null) {
-        return await UserModel.getUserById(user.uid);
+        return user;
       }
       print(result);
       return null;

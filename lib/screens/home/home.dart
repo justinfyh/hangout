@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangout/components/navigation-bar.dart';
 import 'package:hangout/models/event.dart';
+import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/home/event_explore.dart';
 import 'package:hangout/screens/home/event_list.dart';
 import 'package:hangout/screens/home/event_month.dart';
@@ -20,8 +21,9 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User?>(context);
-    String? email = user?.email;
+    final user = Provider.of<UserModel?>(context);
+    print(user);
+    String? uid = user?.uid;
     return StreamProvider<List<Event>?>.value(
       value: DatabaseService().events,
       initialData: null,
@@ -49,7 +51,7 @@ class Home extends StatelessWidget {
               EventList(),
               FriendSection(),
               ExploreSection(),
-              Text(email ?? "no user logged in"),
+              Text(uid ?? "no user logged in"),
               Center(
                   child: FilledButton(
                       onPressed: () async {

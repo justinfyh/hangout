@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
       String password = _passwordController.text;
-      UserModel? user = await _auth.signInEmailPassword(username, password);
+      User? user = await _auth.signInEmailPassword(username, password);
       if (user?.email != null) {
         Navigator.pop(context);
       }

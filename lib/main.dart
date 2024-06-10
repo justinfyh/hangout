@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/wrapper.dart';
 import 'package:hangout/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
+    return StreamProvider<UserModel?>.value(
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
