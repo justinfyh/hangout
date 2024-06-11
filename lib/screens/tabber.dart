@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hangout/screens/authenticate/Login.dart';
 import 'package:hangout/screens/authenticate/register.dart';
+import 'package:hangout/screens/friends/friends.dart';
 import 'package:hangout/screens/home/home.dart';
 
 class Tabber extends StatelessWidget {
@@ -12,7 +12,7 @@ class Tabber extends StatelessWidget {
       body: TabBarView(
         children: [
           Home(),
-          Login(),
+          Friends(),
           Register(),
           // ProfileTab(),
           // SettingsTab(),

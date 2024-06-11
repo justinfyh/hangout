@@ -21,13 +21,13 @@ class _EventListState extends State<EventList> {
     }
 
     return SizedBox(
-      height: 200,
+      height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: events.length,
         itemBuilder: (context, index) {
           return Container(
-            width: 150,
+            // width: 150,
             margin: EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,22 +45,41 @@ class _EventListState extends State<EventList> {
                 //   ),
                 // ),
                 SizedBox(height: 8),
-                Image.network(
-                  'https://firebasestorage.googleapis.com/v0/b/hangout-ef87b.appspot.com/o/westfield-albany.jpg?alt=media',
-                  // Specify your Firebase Storage URL here
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Text('Error loading image');
-                  },
+                Container(
+                  width: 160,
+                  height: 160, // Adjust the size as needed
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(8), // Adjust the radius as needed
+                  ),
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(10), // Same radius as above
+                    child: Image.network(
+                      'https://firebasestorage.googleapis.com/v0/b/hangout-ef87b.appspot.com/o/westfield-albany.jpg?alt=media',
+                      fit: BoxFit.fill,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(
+                          child: Text('Error loading image'),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 6,
                 ),
                 Text(events[index].name,
                     style: TextStyle(fontWeight: FontWeight.bold)),
