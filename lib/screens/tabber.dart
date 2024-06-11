@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/screens/authenticate/register.dart';
+import 'package:hangout/screens/create-event/create_event.dart';
 import 'package:hangout/screens/friends/friends.dart';
 import 'package:hangout/screens/home/home.dart';
 
@@ -13,7 +14,7 @@ class Tabber extends StatelessWidget {
         children: [
           Home(),
           Friends(),
-          Register(),
+          CreateEventPage(),
           // ProfileTab(),
           // SettingsTab(),
         ],
