@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hangout/components/navigation-bar.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/home/event_explore.dart';
@@ -32,6 +31,7 @@ class Home extends StatelessWidget {
         appBar: AppBar(
           // backgroundColor: Colors.white,
           // elevation: 0,
+          // bottom:
           leading: IconButton(
             icon: const Icon(Icons.menu, color: Colors.black),
             onPressed: () {},
@@ -76,7 +76,6 @@ class Home extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: CustomNavigationBar(),
       ),
     );
   }
