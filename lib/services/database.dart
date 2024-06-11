@@ -22,13 +22,15 @@ class DatabaseService {
     }
   }
 
-  Future<void> createEvent() async {
+  Future<void> createEvent(String eventName, String dateTime, String location,
+      String details, String ownerUid) async {
     try {
       await eventsCollection.add({
-        'event_name': 'Party',
-        'location': 'Albany Mall',
-        'date': '10.06.2024',
-        'time': '1200',
+        'event_name': eventName,
+        'location': location,
+        'date_time': dateTime,
+        'details': details,
+        'owner_uid': ownerUid,
       });
     } catch (e) {
       print("Failed to add event: $e");
@@ -53,7 +55,9 @@ class DatabaseService {
       return Event(
           name: doc.get('event_name') ?? '',
           location: doc.get('location') ?? '',
-          date: doc.get('date') ?? 0);
+          dateTime: doc.get('date_time') ?? 0,
+          details: doc.get('details'),
+          ownerUid: doc.get('owner_uid'));
     }).toList();
   }
 

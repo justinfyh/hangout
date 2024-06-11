@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hangout/models/user.dart';
+import 'package:hangout/services/database.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CreateEventPage extends StatefulWidget {
+  const CreateEventPage({super.key});
+
   @override
   _CreateEventPageState createState() => _CreateEventPageState();
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _eventNameController = TextEditingController();
-  TextEditingController _dateTimeController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
-  TextEditingController _detailsController = TextEditingController();
+  final TextEditingController _eventNameController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _detailsController = TextEditingController();
 
   @override
   void initState() {
@@ -50,9 +55,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserIdentity?>(context);
+    Provider.of<UserModel?>(context);
+    final String uid = user!.uid;
+    final DatabaseService db = DatabaseService(uid: uid);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Event'),
+        title: const Text('Create Event'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,7 +72,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             children: <Widget>[
               Container(
                 height: 200,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
                         'assets/images/landing-background.png'), // replace with your image asset path
@@ -78,15 +88,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         children: <Widget>[
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Pick a GIF'),
+                            child: const Text('Pick a GIF'),
                           ),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Gallery'),
+                            child: const Text('Gallery'),
                           ),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Upload'),
+                            child: const Text('Upload'),
                           ),
                         ],
                       ),
@@ -94,10 +104,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _eventNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Event Name', border: OutlineInputBorder()),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -106,71 +116,77 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _dateTimeController,
                 readOnly: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Start date and time',
                     border: OutlineInputBorder()),
                 onTap: () => _selectDateTime(context),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: <Widget>[
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('Add end time'),
+                      child: const Text('Add end time'),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('Repeat event'),
+                      child: const Text('Repeat event'),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('UTC+12'),
+                      child: const Text('UTC+12'),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _locationController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Location', border: OutlineInputBorder()),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Who can see it?', border: OutlineInputBorder()),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _detailsController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'What are the details?',
                     border: OutlineInputBorder()),
                 maxLines: 3,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Handle event creation logic here
+                    db.createEvent(
+                        _eventNameController.text,
+                        _dateTimeController.text,
+                        _locationController.text,
+                        _detailsController.text,
+                        uid);
                   }
                 },
-                child: Text('Create event'),
+                child: const Text('Create event'),
                 style: ElevatedButton.styleFrom(
                   // primary: Colors.orange,
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  textStyle: TextStyle(fontSize: 18),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
               ),
             ],

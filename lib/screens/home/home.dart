@@ -69,14 +69,14 @@ class Home extends StatelessWidget {
                             child: const Text('Log Out'),
                           ),
                         ),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              await _database.createEvent();
-                            },
-                            child: const Text('Create Event'),
-                          ),
-                        ),
+                        // Center(
+                        //   child: ElevatedButton(
+                        //     onPressed: () async {
+                        //       await _database.createEvent();
+                        //     },
+                        //     child: const Text('Create Event'),
+                        //   ),
+                        // ),
                         // Center(
                         //   child: ElevatedButton(
                         //     onPressed: () async {
