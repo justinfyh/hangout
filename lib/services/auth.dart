@@ -7,7 +7,8 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Stream<UserModel?> get user {
+// USER STREAM
+  Stream<UserIdentity?> get user {
     _auth.authStateChanges().listen((User? user) {
       if (user != null) {
         print(user.uid);
@@ -18,30 +19,37 @@ class AuthService {
         .map((User? user) => _userFromCredUser(user));
   }
 
-  UserModel? _userFromCredUser(User? user) {
-    return user != null ? UserModel(uid: user.uid) : null;
+  UserIdentity? _userFromCredUser(User? user) {
+    return user != null ? UserIdentity(uid: user.uid) : null;
   }
 
-  Future<UserModel?> getUserInfo(String uid) async {
-    try {
-      DocumentSnapshot doc = await _db.collection('users').doc(uid).get();
-      if (doc.exists) {
-        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
-      }
-      return null;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+  // Future<UserModel?> getUserInfo(String uid) async {
+  //   try {
+  //     DocumentSnapshot doc = await _db.collection('users').doc(uid).get();
+  //     if (doc.exists) {
+  //       return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
+// REGISTER
   Future registerEmailPassword(name, email, password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
       if (user != null) {
-        UserModel newUser = UserModel(uid: user.uid, name: name, email: email);
+        UserModel newUser = UserModel(
+            uid: user.uid,
+            name: name,
+            email: email,
+            profileImageUrl: 'ee',
+            friends: [],
+            savedEvents: []);
         await _db.collection('users').doc(user.uid).set(newUser.toMap());
         return newUser;
       }
@@ -52,6 +60,7 @@ class AuthService {
     }
   }
 
+// SIGN IN
   Future<User?> signInEmailPassword(emailAddress, password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -90,15 +99,18 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
-      print('fff');
-      print(_auth.currentUser);
       return user;
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
+// SIGN OUT
   Future signOut() async {
     try {
       _auth.signOut();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class FriendSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // final userData = Provider.of
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

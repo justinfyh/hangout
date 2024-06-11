@@ -16,15 +16,22 @@ class Home extends StatelessWidget {
 
   final AuthService _auth = AuthService();
 
-  final DatabaseService _database = DatabaseService();
-
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel?>(context);
-    print(user?.email);
-    String? uid = user?.uid;
+    final user = Provider.of<UserIdentity?>(context);
+    final userData = Provider.of<UserModel?>(context);
+    final eventData = Provider.of<List<Event>?>(context);
+    print(eventData?[0].name);
+    print(user?.uid);
+    print(' email ${userData?.email}');
+    // print
+    String uid = user!.uid;
+    // print(uid);
+
+    final DatabaseService _database = DatabaseService(uid: uid);
+
     return StreamProvider<List<Event>?>.value(
-      value: DatabaseService().events,
+      value: DatabaseService(uid: uid).events,
       initialData: null,
       child: Scaffold(
         appBar: AppBar(
@@ -51,6 +58,7 @@ class Home extends StatelessWidget {
               FriendSection(),
               ExploreSection(),
               Text(uid ?? "no user logged in"),
+              Text(userData?.email ?? "no email"),
               Center(
                   child: FilledButton(
                       onPressed: () async {
