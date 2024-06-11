@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangout/components/navigation-bar.dart';
 import 'package:hangout/models/event.dart';
@@ -69,7 +68,7 @@ class Home extends StatelessWidget {
                       onPressed: () async {
                         await _database.addFriend(user!.uid);
                       },
-                      child: const Text('Create Event'))),
+                      child: const Text('Add Friend'))),
             ],
           ),
         ),

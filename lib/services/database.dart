@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hangout/models/event.dart';
+import 'package:hangout/models/user.dart';
 
 class DatabaseService {
   // final String uid;
   // DatabaseService({required this.uid});
-
-  // final CollectionReference brewCollection =
-  //     FirebaseFirestore.instance.collection('brews');
 
   final CollectionReference eventsCollection =
       FirebaseFirestore.instance.collection('events');
@@ -19,7 +17,9 @@ class DatabaseService {
       await usersCollection.doc(uid).update({
         'friends': FieldValue.arrayUnion(['cacaf4SJDuOpRlpB0EasIdjojlJ2'])
       });
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> createEvent() async {
@@ -32,6 +32,19 @@ class DatabaseService {
       });
     } catch (e) {
       print("Failed to add event: $e");
+    }
+  }
+
+  Future<UserModel?> getUserById(String uid) async {
+    try {
+      DocumentSnapshot doc = await usersCollection.doc(uid).get();
+      if (doc.exists) {
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+      }
+      return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
   }
 
