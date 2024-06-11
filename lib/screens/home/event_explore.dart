@@ -7,12 +7,14 @@ class ExploreSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
           child: Text('Explore Other Events',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Text('See what\'s happening around you',
               style: TextStyle(color: Colors.grey)),
         ),

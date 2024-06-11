@@ -12,10 +12,10 @@ class DatabaseService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> addFriend(String uid) async {
+  Future<void> addFriend(String uid, String friendUid) async {
     try {
       await usersCollection.doc(uid).update({
-        'friends': FieldValue.arrayUnion(['A8GKGqEkwUXs258EC1zL1CPZ9qE2'])
+        'friends': FieldValue.arrayUnion([friendUid])
       });
     } catch (e) {
       print(e);

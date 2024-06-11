@@ -77,14 +77,14 @@ class Home extends StatelessWidget {
                             child: const Text('Create Event'),
                           ),
                         ),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              await _database.addFriend(user.uid);
-                            },
-                            child: const Text('Add Friend'),
-                          ),
-                        ),
+                        // Center(
+                        //   child: ElevatedButton(
+                        //     onPressed: () async {
+                        //       await _database.addFriend(user.uid);
+                        //     },
+                        //     child: const Text('Add Friend'),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
