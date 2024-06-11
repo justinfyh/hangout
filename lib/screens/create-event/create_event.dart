@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/services/database.dart';
+import 'package:hangout/services/storage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,11 +19,24 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
 
+  final StorageService _storage = StorageService();
+
+  String _downloadUrl = '';
+
   @override
   void initState() {
     super.initState();
     _dateTimeController.text =
         DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now());
+  }
+
+  Future<void> _uploadImage() async {
+    String url = await _storage.pickAndUploadImage();
+    if (url != null) {
+      setState(() {
+        _downloadUrl = url;
+      });
+    }
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -72,10 +86,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
             children: <Widget>[
               Container(
                 height: 200,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/landing-background.png'), // replace with your image asset path
+                    image: NetworkImage(
+                        _downloadUrl), // replace with your image asset path
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -95,7 +109,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             child: const Text('Gallery'),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: _uploadImage,
                             child: const Text('Upload'),
                           ),
                         ],
