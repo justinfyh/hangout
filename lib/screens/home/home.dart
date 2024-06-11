@@ -20,13 +20,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
     final userData = Provider.of<UserModel?>(context);
-    final eventData = Provider.of<List<Event>?>(context);
-    print(eventData?[0].name);
-    print(user?.uid);
-    print(' email ${userData?.email}');
-    // print
-    String uid = user!.uid;
-    // print(uid);
+    // final eventData = Provider.of<List<Event>?>(context);
+    final String uid = user!.uid;
 
     final DatabaseService _database = DatabaseService(uid: uid);
 
@@ -38,13 +33,13 @@ class Home extends StatelessWidget {
           // backgroundColor: Colors.white,
           // elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.menu, color: Colors.black),
+            icon: const Icon(Icons.menu, color: Colors.black),
             onPressed: () {},
           ),
-          title: Text('Hangout', style: TextStyle(color: Colors.black)),
+          title: const Text('Hangout', style: TextStyle(color: Colors.black)),
           actions: [
             IconButton(
-              icon: Icon(Icons.person, color: Colors.black),
+              icon: const Icon(Icons.person, color: Colors.black),
               onPressed: () {},
             ),
           ],
@@ -52,13 +47,14 @@ class Home extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Text(userData?.name ?? "no email"),
+              Text(uid),
+              Text(userData?.email ?? "no email"),
               EventTabs(),
               MonthlyEvents(),
               EventList(),
               FriendSection(),
               ExploreSection(),
-              Text(uid ?? "no user logged in"),
-              Text(userData?.email ?? "no email"),
               Center(
                   child: FilledButton(
                       onPressed: () async {
@@ -74,7 +70,7 @@ class Home extends StatelessWidget {
               Center(
                   child: ElevatedButton(
                       onPressed: () async {
-                        await _database.addFriend(user!.uid);
+                        await _database.addFriend(user.uid);
                       },
                       child: const Text('Add Friend'))),
             ],

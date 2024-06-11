@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/authenticate/authenticate.dart';
 import 'package:hangout/screens/home/home.dart';
-import 'package:hangout/screens/home/userdata.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +29,6 @@ class Wrapper extends StatelessWidget {
         ],
         child: Home(),
       );
-      // return HomeScreen();
     }
   }
 }

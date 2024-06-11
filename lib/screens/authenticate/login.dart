@@ -1,15 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hangout/models/user.dart';
-import 'package:hangout/screens/authenticate/register.dart';
 import '../../services/auth.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
-
-  // final void Function() toggleView;
-
-  // const Login({super.key, required this.toggleView});
 
   @override
   State<Login> createState() => _LoginState();
@@ -51,14 +45,13 @@ class _LoginState extends State<Login> {
     }
   }
 
-  // final StorageService _storage = StorageService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('Hangout'),
+        title: const Text('Hangout'),
       ),
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -82,7 +75,7 @@ class _LoginState extends State<Login> {
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   TextFormField(
                     controller: _usernameController,
                     decoration: const InputDecoration(
@@ -111,7 +104,7 @@ class _LoginState extends State<Login> {
                   ElevatedButton(
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         backgroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
@@ -120,16 +113,16 @@ class _LoginState extends State<Login> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ElevatedButton.icon(
                     onPressed: _handleGoogleSignIn,
                     icon: Image.asset('assets/icons/google.png'),
                     style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 6),
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    label: Text(
+                    label: const Text(
                       'Continue with Google',
                       style: TextStyle(color: Colors.black),
                     ),

@@ -23,19 +23,6 @@ class AuthService {
     return user != null ? UserIdentity(uid: user.uid) : null;
   }
 
-  // Future<UserModel?> getUserInfo(String uid) async {
-  //   try {
-  //     DocumentSnapshot doc = await _db.collection('users').doc(uid).get();
-  //     if (doc.exists) {
-  //       return UserModel.fromMap(doc.data() as Map<String, dynamic>);
-  //     }
-  //     return null;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
-
 // REGISTER
   Future registerEmailPassword(name, email, password) async {
     try {

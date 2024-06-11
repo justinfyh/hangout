@@ -15,7 +15,7 @@ class DatabaseService {
   Future<void> addFriend(String uid) async {
     try {
       await usersCollection.doc(uid).update({
-        'friends': FieldValue.arrayUnion(['cacaf4SJDuOpRlpB0EasIdjojlJ2'])
+        'friends': FieldValue.arrayUnion(['A8GKGqEkwUXs258EC1zL1CPZ9qE2'])
       });
     } catch (e) {
       print(e);
@@ -35,18 +35,18 @@ class DatabaseService {
     }
   }
 
-  // Future<UserModel?> getUserById(String uid) async {
-  //   try {
-  //     DocumentSnapshot doc = await usersCollection.doc(uid).get();
-  //     if (doc.exists) {
-  //       return UserModel.fromMap(doc.data() as Map<String, dynamic>);
-  //     }
-  //     return null;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
+  Future<UserModel?> getUserById(String uid) async {
+    try {
+      DocumentSnapshot doc = await usersCollection.doc(uid).get();
+      if (doc.exists) {
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+      }
+      return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -58,22 +58,8 @@ class DatabaseService {
   }
 
   Stream<List<Event>> get events {
-    // print(eventsCollection.snapshots().map(_eventListFromSnapshot));
-
     return eventsCollection.snapshots().map(_eventListFromSnapshot);
   }
-
-  // UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
-  //   var data = snapshot.data() as Map<String, dynamic>;
-  //   return UserModel(
-  //     uid: snapshot.id,
-  //     name: data['name'] as String,
-  //     email: data['email'] as String,
-  //     friends: data['friends'] as List<String>,
-  //     savedEvents: data['savedEvents'] as List<dynamic>,
-  //     profileImageUrl: data['friends']['profileImageUrl'] as String,
-  //   );
-  // }
 
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
@@ -98,8 +84,4 @@ class DatabaseService {
       return null; // Handle error by returning null
     });
   }
-
-  // Stream<UserModel> get userData {
-  //   return usersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
-  // }
 }
