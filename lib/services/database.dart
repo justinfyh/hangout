@@ -23,7 +23,7 @@ class DatabaseService {
   }
 
   Future<void> createEvent(String eventName, String dateTime, String location,
-      String details, String ownerUid) async {
+      String details, String ownerUid, String imageUrl) async {
     try {
       await eventsCollection.add({
         'event_name': eventName,
@@ -31,6 +31,7 @@ class DatabaseService {
         'date_time': dateTime,
         'details': details,
         'owner_uid': ownerUid,
+        'image_url': imageUrl,
       });
     } catch (e) {
       print("Failed to add event: $e");
@@ -57,7 +58,8 @@ class DatabaseService {
           location: doc.get('location') ?? '',
           dateTime: doc.get('date_time') ?? 0,
           details: doc.get('details'),
-          ownerUid: doc.get('owner_uid'));
+          ownerUid: doc.get('owner_uid'),
+          imageUrl: doc.get('image_url'));
     }).toList();
   }
 

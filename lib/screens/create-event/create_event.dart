@@ -18,6 +18,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
+  final TextEditingController _imageController = TextEditingController();
 
   final StorageService _storage = StorageService();
 
@@ -35,6 +36,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     if (url != null) {
       setState(() {
         _downloadUrl = url;
+        _imageController.text = url;
       });
     }
   }
@@ -193,7 +195,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         _dateTimeController.text,
                         _locationController.text,
                         _detailsController.text,
-                        uid);
+                        uid,
+                        _imageController.text);
                   }
                 },
                 child: const Text('Create event'),

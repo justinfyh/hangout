@@ -56,7 +56,7 @@ class _EventListState extends State<EventList> {
                     borderRadius:
                         BorderRadius.circular(10), // Same radius as above
                     child: Image.network(
-                      'https://firebasestorage.googleapis.com/v0/b/hangout-ef87b.appspot.com/o/westfield-albany.jpg?alt=media',
+                      events[index].imageUrl,
                       fit: BoxFit.fill,
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent? loadingProgress) {

@@ -23,7 +23,7 @@ class Tabber extends StatelessWidget {
         tabs: [
           Tab(icon: Icon(Icons.home), text: 'Home'),
           Tab(icon: Icon(Icons.person), text: 'Friends'),
-          Tab(icon: Icon(Icons.settings), text: 'Settings'),
+          Tab(icon: Icon(Icons.add), text: 'Create'),
         ],
       ),
     );
