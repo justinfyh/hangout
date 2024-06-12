@@ -79,6 +79,18 @@ class _CreateEventPageState extends State<CreateEventPage> {
     }
   }
 
+  Future<void> _clearForm() async {
+    _eventNameController.clear();
+    _dateTimeController.text =
+        DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now());
+    _locationController.clear();
+    _detailsController.clear();
+    setState(() {
+      _selectedImagePath = null;
+      _downloadUrl = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
@@ -203,6 +215,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       uid,
                       _downloadUrl ?? '',
                     );
+
+                    _clearForm();
+                    DefaultTabController.of(context).animateTo(0);
                   }
                 },
                 child: const Text('Create event'),
