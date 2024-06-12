@@ -13,15 +13,15 @@ class StorageService {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    print(image!.path);
+    // print(image!.path);
 
     if (image != null) {
-      _selectedImagePath = image.path;
+      return image.path;
     } else {
-      _selectedImagePath = null;
+      return "no image";
     }
 
-    return image.path;
+    // return image!.path;
   }
 
   // Upload the previously selected image to Firebase Storage

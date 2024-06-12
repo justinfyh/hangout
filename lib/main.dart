@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
           theme: _buildTheme(Brightness.light),
-          home: DefaultTabController(length: 3, child: const Wrapper())),
+          home: DefaultTabController(length: 4, child: const Wrapper())),
     );
     // );
   }

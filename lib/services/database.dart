@@ -22,6 +22,19 @@ class DatabaseService {
     }
   }
 
+  Future<void> updateUser(
+      String uid, String name, String email, String profileImageUrl) async {
+    try {
+      await usersCollection.doc(uid).update({
+        'name': name,
+        'email': email,
+        'profileImageUrl': profileImageUrl,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> createEvent(String eventName, String dateTime, String location,
       String details, String ownerUid, String imageUrl) async {
     try {
