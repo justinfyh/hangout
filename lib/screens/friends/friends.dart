@@ -43,7 +43,7 @@ class Friends extends StatelessWidget {
                       ),
                       onSubmitted: (username) {
                         // Perform add friend operation using uid
-                        db.addFriend(uid, username);
+                        db.sendFriendRequest(uid, username);
                       },
                     ),
                   ),

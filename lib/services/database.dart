@@ -12,14 +12,38 @@ class DatabaseService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  final CollectionReference friendshipsCollection =
+      FirebaseFirestore.instance.collection('friendships');
+
   Future<void> addFriend(String uid, String friendUid) async {
     try {
-      await usersCollection.doc(uid).update({
-        'friends': FieldValue.arrayUnion([friendUid])
+      final docRef = await friendshipsCollection.add({
+        'friendshipId': "",
+        'user1Id': uid,
+        'user2Id': friendUid,
+        'createdAt': FieldValue.serverTimestamp(),
       });
+      final docId = docRef.id;
+
+      await friendshipsCollection.doc(docId).update({'friendshipId': docId});
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> sendFriendRequest(
+      String currentUserId, String targetUserId) async {
+    final request = {
+      'fromUserId': currentUserId,
+      'status': 'pending',
+      // 'createdAt': FieldValue.serverTimestamp(),
+    };
+
+    final targetUserDocRef =
+        FirebaseFirestore.instance.collection('users').doc(targetUserId);
+    await targetUserDocRef.update({
+      'friendRequests': FieldValue.arrayUnion([request]),
+    });
   }
 
   Future<void> updateUser(
