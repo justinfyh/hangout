@@ -99,6 +99,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     final DatabaseService db = DatabaseService(uid: uid);
 
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
         title: const Text('Create Event'),
       ),

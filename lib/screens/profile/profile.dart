@@ -55,6 +55,7 @@ class _ProfileState extends State<Profile> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
         title: Text('Edit Profile'),
       ),

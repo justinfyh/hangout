@@ -15,6 +15,7 @@ class Friends extends StatelessWidget {
     final DatabaseService db = DatabaseService(uid: uid);
 
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black),

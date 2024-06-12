@@ -3,6 +3,7 @@ import 'package:hangout/screens/authenticate/register.dart';
 import 'package:hangout/screens/create-event/create_event.dart';
 import 'package:hangout/screens/friends/friends.dart';
 import 'package:hangout/screens/home/home.dart';
+import 'package:hangout/screens/notifications/notifications.dart';
 import 'package:hangout/screens/profile/profile.dart';
 
 class Tabber extends StatelessWidget {
@@ -16,6 +17,7 @@ class Tabber extends StatelessWidget {
           Home(),
           Friends(),
           CreateEventPage(),
+          Notifications(),
           Profile()
           // ProfileTab(),
           // SettingsTab(),
@@ -23,10 +25,12 @@ class Tabber extends StatelessWidget {
       ),
       bottomNavigationBar: const TabBar(
         tabs: [
-          Tab(icon: Icon(Icons.home), text: 'Home'),
-          Tab(icon: Icon(Icons.person), text: 'Friends'),
-          Tab(icon: Icon(Icons.add), text: 'Create'),
-          Tab(icon: Icon(Icons.person_2), text: 'Profile'),
+          Tab(icon: Icon(Icons.home)),
+          Tab(icon: Icon(Icons.person_add)),
+          Tab(icon: Icon(Icons.add_box)),
+          Tab(icon: Icon(Icons.access_alarm)),
+          Tab(icon: Icon(Icons.person_2)),
+          // Tab(icon: Icon(Icons.person_2), text: 'Profile'),
         ],
       ),
     );
