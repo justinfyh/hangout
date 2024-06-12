@@ -10,7 +10,7 @@ class FriendSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
     final userData = Provider.of<UserModel?>(context);
-    DatabaseService _db = DatabaseService(uid: user!.uid);
+    DatabaseService db = DatabaseService(uid: user!.uid);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,15 +28,15 @@ class FriendSection extends StatelessWidget {
             itemBuilder: (context, index) {
               final friendUid = userData?.friends[index];
               if (friendUid == null) {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
               return FutureBuilder<UserModel?>(
-                future: _db.getUserById(friendUid),
+                future: db.getUserById(friendUid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       width: 80,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       child: const Column(
                         children: [
                           CircleAvatar(
@@ -49,7 +49,7 @@ class FriendSection extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return Container(
                       width: 80,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       child: const Column(
                         children: [
                           CircleAvatar(radius: 30, child: Icon(Icons.error)),
@@ -61,7 +61,7 @@ class FriendSection extends StatelessWidget {
                   } else if (!snapshot.hasData || snapshot.data == null) {
                     return Container(
                       width: 80,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       child: const Column(
                         children: [
                           CircleAvatar(radius: 30, child: Icon(Icons.person)),
@@ -75,15 +75,18 @@ class FriendSection extends StatelessWidget {
                   UserModel friend = snapshot.data!;
                   return Container(
                     width: 80,
-                    margin: EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(friend.profileImageUrl),
+                          backgroundImage: friend.profileImageUrl != null &&
+                                  friend.profileImageUrl.isNotEmpty
+                              ? NetworkImage(friend.profileImageUrl)
+                              : const AssetImage('assets/images/mascot.png'),
                         ),
-                        SizedBox(height: 8),
-                        Text(friend.name, style: TextStyle(fontSize: 12)),
+                        const SizedBox(height: 8),
+                        Text(friend.name, style: const TextStyle(fontSize: 12)),
                       ],
                     ),
                   );

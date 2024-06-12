@@ -41,7 +41,7 @@ class _RegisterState extends State<Register> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('Hangout'),
+        title: const Text('Hangout'),
       ),
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -65,7 +65,7 @@ class _RegisterState extends State<Register> {
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   TextFormField(
                     controller: _usernameController,
                     decoration: const InputDecoration(
@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Email', border: OutlineInputBorder()),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -94,8 +94,9 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
-                        labelText: 'Password', border: OutlineInputBorder()),
+                    decoration: const InputDecoration(
+                        labelText: 'Password',
+                        border: const OutlineInputBorder()),
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -107,7 +108,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _confirmPasswordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Confirm Password',
                         border: OutlineInputBorder()),
                     obscureText: true,
@@ -121,11 +122,11 @@ class _RegisterState extends State<Register> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         backgroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),

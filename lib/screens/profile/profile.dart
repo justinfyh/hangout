@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
     final TextEditingController _nameController =
         TextEditingController(text: userData!.name);
     final TextEditingController _emailController =
-        TextEditingController(text: userData!.email);
+        TextEditingController(text: userData.email);
 
     Future<void> _pickImage() async {
       String? imagePath = await _storage.pickImage();
@@ -57,10 +57,10 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             CircleAvatar(
@@ -68,27 +68,34 @@ class _ProfileState extends State<Profile> {
               backgroundImage: _selectedImagePath != null
                   ? FileImage(
                       File(_selectedImagePath!)) // Show preview of new image
-                  : NetworkImage(userData!.profileImageUrl ??
-                      'https://via.placeholder.com/150'), // Show original profile image
+                  : (userData.profileImageUrl != null &&
+                              userData.profileImageUrl.isNotEmpty
+                          ? NetworkImage(
+                              userData.profileImageUrl) // Load network image
+                          : AssetImage('assets/images/mascot.png'))
+                      as ImageProvider, // Show original profile image
             ),
             TextButton(
               onPressed: _pickImage,
-              child: Text('Edit profile image'),
+              child: const Text('Edit profile image'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // _buildTextField('Name', _nameController),
             _buildTextField('Username', _nameController),
             _buildTextField('Email', _emailController),
             // _buildLinkField(),
             _buildTextField('Bio', _bioController, maxLines: 3),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 await _uploadImage();
-                await db.updateUser(uid, _nameController.text,
-                    _emailController.text, _downloadUrl ?? '');
+                await db.updateUser(
+                    uid,
+                    _nameController.text,
+                    _emailController.text,
+                    _downloadUrl ?? userData.profileImageUrl);
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),
@@ -105,7 +112,7 @@ class _ProfileState extends State<Profile> {
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );
@@ -117,8 +124,8 @@ class _ProfileState extends State<Profile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Links'),
-          SizedBox(height: 8),
+          const Text('Links'),
+          const SizedBox(height: 8),
           _buildTextField(
               'Instagram', TextEditingController(text: 'instagram.com/helena')),
           _buildTextField(
@@ -129,7 +136,7 @@ class _ProfileState extends State<Profile> {
             onPressed: () {
               // Implement add link functionality
             },
-            child: Text('+ Add link'),
+            child: const Text('+ Add link'),
           ),
         ],
       ),

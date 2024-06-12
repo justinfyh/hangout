@@ -38,7 +38,7 @@ class Friends extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Add via username...',
                       ),
                       onSubmitted: (username) {
@@ -57,7 +57,7 @@ class Friends extends StatelessWidget {
                 ],
               ),
             ),
-            ListFriends(),
+            const ListFriends(),
           ],
         ),
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MonthlyEvents extends StatelessWidget {
+  const MonthlyEvents({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Column(

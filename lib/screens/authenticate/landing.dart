@@ -30,7 +30,7 @@ class Landing extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
+                        MaterialPageRoute(builder: (context) => const Login()));
                   },
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Color(0xffFF7A00)),
@@ -43,8 +43,10 @@ class Landing extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Register()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Register()));
                     },
                     child: const Text(
                       'Join for free',

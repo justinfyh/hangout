@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class EventTabs extends StatelessWidget {
+  const EventTabs({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Padding(

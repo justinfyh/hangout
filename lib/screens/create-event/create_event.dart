@@ -221,11 +221,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     DefaultTabController.of(context).animateTo(0);
                   }
                 },
-                child: const Text('Create event'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   textStyle: const TextStyle(fontSize: 18),
                 ),
+                child: const Text('Create event'),
               ),
             ],
           ),

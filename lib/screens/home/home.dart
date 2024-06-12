@@ -20,7 +20,6 @@ class Home extends StatelessWidget {
     final user = Provider.of<UserIdentity?>(context);
     final userData = Provider.of<UserModel?>(context);
     final String uid = user!.uid;
-    final DatabaseService _database = DatabaseService(uid: uid);
 
     return StreamProvider<List<Event>?>.value(
       value: DatabaseService(uid: uid).events,

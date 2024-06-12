@@ -28,7 +28,7 @@ class ListFriends extends StatelessWidget {
             itemBuilder: (context, index) {
               final friendUid = userData?.friends[index];
               if (friendUid == null) {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
               return FutureBuilder<UserModel?>(
                 future: db.getUserById(friendUid),
@@ -36,7 +36,7 @@ class ListFriends extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
                       width: 80,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       child: const Column(
                         children: [
                           CircleAvatar(
@@ -49,7 +49,7 @@ class ListFriends extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return Container(
                       width: 80,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       child: const Column(
                         children: [
                           CircleAvatar(radius: 30, child: Icon(Icons.error)),
@@ -61,7 +61,7 @@ class ListFriends extends StatelessWidget {
                   } else if (!snapshot.hasData || snapshot.data == null) {
                     return Container(
                       width: 80,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       child: const Column(
                         children: [
                           CircleAvatar(radius: 30, child: Icon(Icons.person)),
@@ -75,16 +75,16 @@ class ListFriends extends StatelessWidget {
                   UserModel friend = snapshot.data!;
                   return Container(
                     width: 80,
-                    margin: EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 30,
                           // Replace with your own image handling
                           // backgroundImage: NetworkImage(friend.profileImageUrl),
                         ),
-                        SizedBox(height: 8),
-                        Text(friend.name, style: TextStyle(fontSize: 12)),
+                        const SizedBox(height: 8),
+                        Text(friend.name, style: const TextStyle(fontSize: 12)),
                       ],
                     ),
                   );
