@@ -36,7 +36,8 @@ class AuthService {
             email: email,
             profileImageUrl: 'ee',
             friends: [],
-            savedEvents: []);
+            savedEvents: [],
+            requests: []);
         await _db.collection('users').doc(user.uid).set(newUser.toMap());
         return newUser;
       }

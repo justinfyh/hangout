@@ -33,16 +33,16 @@ class DatabaseService {
 
   Future<void> sendFriendRequest(
       String currentUserId, String targetUserId) async {
-    final request = {
-      'fromUserId': currentUserId,
-      'status': 'pending',
-      // 'createdAt': FieldValue.serverTimestamp(),
-    };
+    // final request = {
+    //   'fromUserId': currentUserId,
+    //   'status': 'pending',
+    //   // 'createdAt': FieldValue.serverTimestamp(),
+    // };
 
     final targetUserDocRef =
         FirebaseFirestore.instance.collection('users').doc(targetUserId);
     await targetUserDocRef.update({
-      'friendRequests': FieldValue.arrayUnion([request]),
+      'requests': FieldValue.arrayUnion([currentUserId]),
     });
   }
 
@@ -112,6 +112,7 @@ class DatabaseService {
       name: data['name'] as String,
       email: data['email'] as String,
       friends: List<String>.from(data['friends']),
+      requests: List<String>.from(data['requests']),
       savedEvents: data['savedEvents'] as List<dynamic>,
       profileImageUrl: data['profileImageUrl'] as String,
     );
