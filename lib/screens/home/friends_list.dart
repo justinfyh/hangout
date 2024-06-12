@@ -80,8 +80,7 @@ class FriendSection extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          // Replace with your own image handling
-                          // backgroundImage: NetworkImage(friend.profileImageUrl),
+                          backgroundImage: NetworkImage(friend.profileImageUrl),
                         ),
                         SizedBox(height: 8),
                         Text(friend.name, style: TextStyle(fontSize: 12)),
