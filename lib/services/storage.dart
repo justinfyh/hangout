@@ -1,15 +1,38 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart'; // Add this import for generating unique IDs
+import 'package:uuid/uuid.dart'; // For generating unique IDs
 
 class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final Uuid _uuid = Uuid(); // Initialize the UUID generator
+  String? _selectedImagePath; // Store the selected image path
 
-  // Upload image to Firebase Storage
-  Future<String> uploadImage(String filePath) async {
-    File file = File(filePath);
+  // Select an image from the gallery and store its path
+  Future<String> pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    print(image!.path);
+
+    if (image != null) {
+      _selectedImagePath = image.path;
+    } else {
+      _selectedImagePath = null;
+    }
+
+    return image.path;
+  }
+
+  // Upload the previously selected image to Firebase Storage
+  Future<String> uploadImage(String imagePath) async {
+    if (imagePath == null) {
+      return 'no image';
+    }
+
+    print(imagePath);
+
+    File file = File(imagePath!);
     String uniqueFileName = _uuid.v4(); // Generate a unique file name
 
     try {
@@ -26,18 +49,6 @@ class StorageService {
       print('Error uploading image: $e');
       return 'no image';
     }
-  }
-
-  // Pick an image from the gallery
-  Future<String> pickAndUploadImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      String downloadURL = await uploadImage(image.path);
-      return downloadURL;
-    }
-    return 'no image';
   }
 
   // Retrieve image from Firebase Storage

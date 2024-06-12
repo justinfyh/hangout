@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/services/database.dart';
@@ -18,27 +20,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
-  final TextEditingController _imageController = TextEditingController();
 
   final StorageService _storage = StorageService();
 
-  String _downloadUrl = '';
+  String? _selectedImagePath;
+  String? _downloadUrl;
 
   @override
   void initState() {
     super.initState();
     _dateTimeController.text =
         DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now());
-  }
-
-  Future<void> _uploadImage() async {
-    String url = await _storage.pickAndUploadImage();
-    if (url != null) {
-      setState(() {
-        _downloadUrl = url;
-        _imageController.text = url;
-      });
-    }
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -69,6 +61,24 @@ class _CreateEventPageState extends State<CreateEventPage> {
     }
   }
 
+  Future<void> _pickImage() async {
+    String? imagePath = await _storage.pickImage();
+    if (imagePath != null) {
+      setState(() {
+        _selectedImagePath = imagePath;
+      });
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    if (_selectedImagePath != null) {
+      String url = await _storage.uploadImage(_selectedImagePath!);
+      setState(() {
+        _downloadUrl = url;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
@@ -89,11 +99,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
               Container(
                 height: 200,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        _downloadUrl), // replace with your image asset path
-                    fit: BoxFit.cover,
-                  ),
+                  image: _selectedImagePath == null
+                      ? null
+                      : DecorationImage(
+                          image: FileImage(File(_selectedImagePath!)),
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 child: Stack(
                   children: <Widget>[
@@ -103,16 +114,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       child: Column(
                         children: <Widget>[
                           ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Pick a GIF'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Gallery'),
-                          ),
-                          ElevatedButton(
-                            onPressed: _uploadImage,
-                            child: const Text('Upload'),
+                            onPressed: _pickImage,
+                            child: const Text('Choose Image'),
                           ),
                         ],
                       ),
@@ -187,21 +190,23 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Handle event creation logic here
+                    // Upload the image first
+                    await _uploadImage();
+                    // Then create the event with the download URL
                     db.createEvent(
-                        _eventNameController.text,
-                        _dateTimeController.text,
-                        _locationController.text,
-                        _detailsController.text,
-                        uid,
-                        _imageController.text);
+                      _eventNameController.text,
+                      _dateTimeController.text,
+                      _locationController.text,
+                      _detailsController.text,
+                      uid,
+                      _downloadUrl ?? '',
+                    );
                   }
                 },
                 child: const Text('Create event'),
                 style: ElevatedButton.styleFrom(
-                  // primary: Colors.orange,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   textStyle: const TextStyle(fontSize: 18),
                 ),
