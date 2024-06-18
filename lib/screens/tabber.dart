@@ -24,15 +24,18 @@ class Tabber extends StatelessWidget {
           // SettingsTab(),
         ],
       ),
-      bottomNavigationBar: const TabBar(
-        tabs: [
-          Tab(icon: Icon(Icons.home)),
-          Tab(icon: Icon(Icons.person_add)),
-          Tab(icon: Icon(Icons.add_box)),
-          Tab(icon: Icon(Icons.access_alarm)),
-          Tab(icon: Icon(Icons.person_2)),
-          // Tab(icon: Icon(Icons.person_2), text: 'Profile'),
-        ],
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        child: const TabBar(
+          tabs: [
+            Tab(icon: Icon(Icons.home)),
+            Tab(icon: Icon(Icons.person_add)),
+            Tab(icon: Icon(Icons.add_box)),
+            Tab(icon: Icon(Icons.access_alarm)),
+            Tab(icon: Icon(Icons.person_2)),
+            // Tab(icon: Icon(Icons.person_2), text: 'Profile'),
+          ],
+        ),
       ),
     );
   }
