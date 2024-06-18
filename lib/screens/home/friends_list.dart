@@ -9,70 +9,35 @@ class FriendSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
-    final userData = Provider.of<UserModel?>(context);
     DatabaseService db = DatabaseService(uid: user!.uid);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('Friends',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ),
-        SizedBox(
-          height: 120,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: userData?.friends.length ?? 0,
-            itemBuilder: (context, index) {
-              final friendUid = userData?.friends[index];
-              if (friendUid == null) {
-                return const SizedBox.shrink();
-              }
-              return FutureBuilder<UserModel?>(
-                future: db.getUserById(friendUid),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      width: 80,
-                      margin: const EdgeInsets.all(8.0),
-                      child: const Column(
-                        children: [
-                          CircleAvatar(
-                              radius: 30, child: CircularProgressIndicator()),
-                          SizedBox(height: 8),
-                          Text('Loading...', style: TextStyle(fontSize: 12)),
-                        ],
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Container(
-                      width: 80,
-                      margin: const EdgeInsets.all(8.0),
-                      child: const Column(
-                        children: [
-                          CircleAvatar(radius: 30, child: Icon(Icons.error)),
-                          SizedBox(height: 8),
-                          Text('Error', style: TextStyle(fontSize: 12)),
-                        ],
-                      ),
-                    );
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Container(
-                      width: 80,
-                      margin: const EdgeInsets.all(8.0),
-                      child: const Column(
-                        children: [
-                          CircleAvatar(radius: 30, child: Icon(Icons.person)),
-                          SizedBox(height: 8),
-                          Text('No Data', style: TextStyle(fontSize: 12)),
-                        ],
-                      ),
-                    );
-                  }
+    return FutureBuilder<List<UserModel>>(
+      future: _fetchFriends(db, user.uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error fetching friends'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No friends found'));
+        }
 
-                  UserModel friend = snapshot.data!;
+        List<UserModel> friends = snapshot.data!;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text('Friends',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(
+              height: 120,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: friends.length,
+                itemBuilder: (context, index) {
+                  UserModel friend = friends[index];
                   return Container(
                     width: 80,
                     margin: const EdgeInsets.all(8.0),
@@ -91,11 +56,23 @@ class FriendSection extends StatelessWidget {
                     ),
                   );
                 },
-              );
-            },
-          ),
-        ),
-      ],
+              ),
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  Future<List<UserModel>> _fetchFriends(DatabaseService db, String uid) async {
+    List<String> friendIds = await db.getFriends(uid);
+    List<UserModel> friends = [];
+    for (String friendId in friendIds) {
+      UserModel? friend = await db.getUserById(friendId);
+      if (friend != null) {
+        friends.add(friend);
+      }
+    }
+    return friends;
   }
 }

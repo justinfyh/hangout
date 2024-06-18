@@ -58,6 +58,7 @@ class _ProfileState extends State<Profile> {
       backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
         title: const Text('Edit Profile'),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

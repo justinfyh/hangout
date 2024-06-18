@@ -33,12 +33,6 @@ class DatabaseService {
 
   Future<void> sendFriendRequest(
       String currentUserId, String targetUserId) async {
-    // final request = {
-    //   'fromUserId': currentUserId,
-    //   'status': 'pending',
-    //   // 'createdAt': FieldValue.serverTimestamp(),
-    // };
-
     final targetUserDocRef =
         FirebaseFirestore.instance.collection('users').doc(targetUserId);
     await targetUserDocRef.update({
@@ -59,6 +53,26 @@ class DatabaseService {
     await usersCollection.doc(currentUserId).update({
       'requests': FieldValue.arrayRemove([targetUserId])
     });
+  }
+
+  Future<List<String>> getFriends(String uid) async {
+    List<String> friends = [];
+    try {
+      QuerySnapshot querySnapshot =
+          await friendshipsCollection.where('user1Id', isEqualTo: uid).get();
+      querySnapshot.docs.forEach((doc) {
+        friends.add(doc['user2Id']);
+      });
+
+      querySnapshot =
+          await friendshipsCollection.where('user2Id', isEqualTo: uid).get();
+      querySnapshot.docs.forEach((doc) {
+        friends.add(doc['user1Id']);
+      });
+    } catch (e) {
+      print('Error getting friends: $e');
+    }
+    return friends;
   }
 
   Future<void> updateUser(

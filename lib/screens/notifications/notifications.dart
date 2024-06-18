@@ -23,7 +23,11 @@ class _NotificationsState extends State<Notifications> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Notifications')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Notifications'),
+        backgroundColor: Colors.white,
+      ),
       body: ListView.builder(
         itemCount: userData.requests.length,
         itemBuilder: (context, index) {

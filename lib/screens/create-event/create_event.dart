@@ -102,6 +102,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
       backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
         title: const Text('Create Event'),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
