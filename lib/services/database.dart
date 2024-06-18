@@ -115,6 +115,8 @@ class DatabaseService {
         'details': details,
         'owner_uid': ownerUid,
         'image_url': imageUrl,
+        'going': [ownerUid],
+        'interested': []
       });
       final docId = docRef.id;
 
@@ -151,7 +153,9 @@ class DatabaseService {
             details: doc.get('details'),
             ownerUid: doc.get('owner_uid'),
             imageUrl: doc.get('image_url'),
-            eventId: doc.get('event_id'));
+            eventId: doc.get('event_id'),
+            going: doc.get('going'),
+            interested: doc.get('interested'));
       }
       return null;
     } catch (e) {
@@ -170,7 +174,9 @@ class DatabaseService {
           details: doc.get('details'),
           ownerUid: doc.get('owner_uid'),
           imageUrl: doc.get('image_url'),
-          eventId: doc.get('event_id'));
+          eventId: doc.get('event_id'),
+          going: doc.get('going'),
+          interested: doc.get('interested'));
     }).toList();
   }
 

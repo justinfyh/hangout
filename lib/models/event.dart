@@ -6,6 +6,8 @@ class Event {
   final String ownerUid;
   final String imageUrl;
   final String eventId;
+  final List<dynamic> going;
+  final List<dynamic> interested;
 
   Event(
       {required this.name,
@@ -14,5 +16,7 @@ class Event {
       required this.details,
       required this.ownerUid,
       required this.imageUrl,
-      required this.eventId});
+      required this.eventId,
+      required this.going,
+      required this.interested});
 }

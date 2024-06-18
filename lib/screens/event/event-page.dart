@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/event/status-button.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -115,6 +116,10 @@ class EventDetailsPage extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: 10),
+
+                        GoingButton(),
+
+                        SizedBox(height: 10),
                         Row(
                           children: [
                             Icon(Icons.location_on),
@@ -128,9 +133,10 @@ class EventDetailsPage extends StatelessWidget {
                             // CircleAvatar(radius: 10),
                             // CircleAvatar(radius: 10),
                             // CircleAvatar(radius: 10),
+                            Icon(Icons.check_circle_outline),
                             SizedBox(width: 5),
-                            // Text(
-                            //     '${event.goingCount} going · ${event.interestedCount} interested'),
+                            Text(
+                                '${event.going.length} going · ${event.interested.length} interested'),
                           ],
                         ),
                         SizedBox(height: 20),
