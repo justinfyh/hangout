@@ -5,6 +5,7 @@ class Event {
   final String details;
   final String ownerUid;
   final String imageUrl;
+  final String eventId;
 
   Event(
       {required this.name,
@@ -12,5 +13,6 @@ class Event {
       required this.dateTime,
       required this.details,
       required this.ownerUid,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.eventId});
 }

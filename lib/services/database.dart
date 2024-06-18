@@ -6,6 +6,7 @@ class DatabaseService {
   final String uid;
   DatabaseService({required this.uid});
 
+// get collection references
   final CollectionReference eventsCollection =
       FirebaseFirestore.instance.collection('events');
 
@@ -15,6 +16,7 @@ class DatabaseService {
   final CollectionReference friendshipsCollection =
       FirebaseFirestore.instance.collection('friendships');
 
+// FRIENDSHIPS ------------------------------------------------------------------
   Future<void> addFriend(String uid, String friendUid) async {
     try {
       final docRef = await friendshipsCollection.add({
@@ -75,35 +77,7 @@ class DatabaseService {
     return friends;
   }
 
-  Future<void> updateUser(
-      String uid, String name, String email, String profileImageUrl) async {
-    try {
-      await usersCollection.doc(uid).update({
-        'name': name,
-        'email': email,
-        'profileImageUrl': profileImageUrl,
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> createEvent(String eventName, String dateTime, String location,
-      String details, String ownerUid, String imageUrl) async {
-    try {
-      await eventsCollection.add({
-        'event_name': eventName,
-        'location': location,
-        'date_time': dateTime,
-        'details': details,
-        'owner_uid': ownerUid,
-        'image_url': imageUrl,
-      });
-    } catch (e) {
-      print("Failed to add event: $e");
-    }
-  }
-
+// USERS -----------------------------------------------------------------------
   Future<UserModel?> getUserById(String uid) async {
     try {
       DocumentSnapshot doc = await usersCollection.doc(uid).get();
@@ -117,6 +91,76 @@ class DatabaseService {
     }
   }
 
+  Future<void> updateUser(
+      String uid, String name, String email, String profileImageUrl) async {
+    try {
+      await usersCollection.doc(uid).update({
+        'name': name,
+        'email': email,
+        'profileImageUrl': profileImageUrl,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+//  EVENTS ------------------------------------------------------------------
+  Future<void> createEvent(String eventName, String dateTime, String location,
+      String details, String ownerUid, String imageUrl) async {
+    try {
+      final docRef = await eventsCollection.add({
+        'event_name': eventName,
+        'location': location,
+        'date_time': dateTime,
+        'details': details,
+        'owner_uid': ownerUid,
+        'image_url': imageUrl,
+      });
+      final docId = docRef.id;
+
+      await eventsCollection.doc(docId).update({'event_id': docId});
+    } catch (e) {
+      print("Failed to add event: $e");
+    }
+  }
+
+  //  Future<void> addFriend(String uid, String friendUid) async {
+  //   try {
+  //     final docRef = await friendshipsCollection.add({
+  //       'friendshipId': "",
+  //       'user1Id': uid,
+  //       'user2Id': friendUid,
+  //       'createdAt': FieldValue.serverTimestamp(),
+  //     });
+  //     final docId = docRef.id;
+
+  //     await friendshipsCollection.doc(docId).update({'friendshipId': docId});
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  Future<Event?> getEventById(String eventId) async {
+    try {
+      DocumentSnapshot doc = await eventsCollection.doc(eventId).get();
+      if (doc.exists) {
+        return Event(
+            name: doc.get('event_name') ?? '',
+            location: doc.get('location') ?? '',
+            dateTime: doc.get('date_time') ?? 0,
+            details: doc.get('details'),
+            ownerUid: doc.get('owner_uid'),
+            imageUrl: doc.get('image_url'),
+            eventId: doc.get('event_id'));
+      }
+      return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // FROM SNAPSHOTS -----------------------------------------------------------
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Event(
@@ -125,12 +169,9 @@ class DatabaseService {
           dateTime: doc.get('date_time') ?? 0,
           details: doc.get('details'),
           ownerUid: doc.get('owner_uid'),
-          imageUrl: doc.get('image_url'));
+          imageUrl: doc.get('image_url'),
+          eventId: doc.get('event_id'));
     }).toList();
-  }
-
-  Stream<List<Event>> get events {
-    return eventsCollection.snapshots().map(_eventListFromSnapshot);
   }
 
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
@@ -145,6 +186,11 @@ class DatabaseService {
       savedEvents: data['savedEvents'] as List<dynamic>,
       profileImageUrl: data['profileImageUrl'] as String,
     );
+  }
+
+  // STREAMS ---------------------------------------------------------------------
+  Stream<List<Event>> get events {
+    return eventsCollection.snapshots().map(_eventListFromSnapshot);
   }
 
   Stream<UserModel?> get userData {
