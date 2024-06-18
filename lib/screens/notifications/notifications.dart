@@ -23,73 +23,93 @@ class _NotificationsState extends State<Notifications> {
     }
 
     return Scaffold(
-        appBar: AppBar(title: const Text('Notifications')),
-        body: ListView.builder(
-          itemCount: userData.requests.length,
-          itemBuilder: (context, index) {
-            final request = userData.requests[index];
-            final user = db.getUserById(request);
-            return FutureBuilder<UserModel?>(
-              future: db.getUserById(request),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                    width: 80,
-                    margin: const EdgeInsets.all(8.0),
-                    child: const Column(
-                      children: [
-                        CircleAvatar(
-                            radius: 30, child: CircularProgressIndicator()),
-                        SizedBox(height: 8),
-                        Text('Loading...', style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Container(
-                    width: 80,
-                    margin: const EdgeInsets.all(8.0),
-                    child: const Column(
-                      children: [
-                        CircleAvatar(radius: 30, child: Icon(Icons.error)),
-                        SizedBox(height: 8),
-                        Text('Error', style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  );
-                } else if (!snapshot.hasData || snapshot.data == null) {
-                  return Container(
-                    width: 80,
-                    margin: const EdgeInsets.all(8.0),
-                    child: const Column(
-                      children: [
-                        CircleAvatar(radius: 30, child: Icon(Icons.person)),
-                        SizedBox(height: 8),
-                        Text('No Data', style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  );
-                }
-
-                UserModel friend = snapshot.data!;
+      appBar: AppBar(title: const Text('Notifications')),
+      body: ListView.builder(
+        itemCount: userData.requests.length,
+        itemBuilder: (context, index) {
+          final request = userData.requests[index];
+          return FutureBuilder<UserModel?>(
+            future: db.getUserById(request),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container(
                   width: 80,
                   margin: const EdgeInsets.all(8.0),
-                  child: Column(
+                  child: const Column(
                     children: [
                       CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(friend.profileImageUrl),
-                      ),
-                      const SizedBox(height: 8),
-                      Text('${friend.name} sent you a friend request',
-                          style: const TextStyle(fontSize: 12)),
+                          radius: 30, child: CircularProgressIndicator()),
+                      SizedBox(height: 8),
+                      Text('Loading...', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                 );
-              },
-            );
-          },
-        ));
+              } else if (snapshot.hasError) {
+                return Container(
+                  width: 80,
+                  margin: const EdgeInsets.all(8.0),
+                  child: const Column(
+                    children: [
+                      CircleAvatar(radius: 30, child: Icon(Icons.error)),
+                      SizedBox(height: 8),
+                      Text('Error', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                );
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return Container(
+                  width: 80,
+                  margin: const EdgeInsets.all(8.0),
+                  child: const Column(
+                    children: [
+                      CircleAvatar(radius: 30, child: Icon(Icons.person)),
+                      SizedBox(height: 8),
+                      Text('No Data', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                );
+              }
+
+              UserModel friend = snapshot.data!;
+              return ListTile(
+                leading: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: NetworkImage(friend.profileImageUrl),
+                ),
+                title: Text(friend.name),
+                subtitle: Text('sent you a friend request'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle accept action
+                        db.acceptFriendRequest(uid, friend.uid);
+                      },
+                      child: const Text('Accept'),
+                      style: ElevatedButton.styleFrom(
+                          // primary: Colors.orange,
+                          // onPrimary: Colors.white,
+                          ),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton(
+                      onPressed: () {
+                        // Handle delete action
+                        db.declineFriendRequest(uid, friend.uid);
+                      },
+                      child: const Text('Delete'),
+                      style: OutlinedButton.styleFrom(
+                          // primary: Colors.grey,
+                          ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }

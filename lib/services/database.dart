@@ -46,6 +46,21 @@ class DatabaseService {
     });
   }
 
+  Future<void> acceptFriendRequest(
+      String currentUserId, String targetUserId) async {
+    addFriend(currentUserId, targetUserId);
+    await usersCollection.doc(currentUserId).update({
+      'requests': FieldValue.arrayRemove([targetUserId])
+    });
+  }
+
+  Future<void> declineFriendRequest(
+      String currentUserId, String targetUserId) async {
+    await usersCollection.doc(currentUserId).update({
+      'requests': FieldValue.arrayRemove([targetUserId])
+    });
+  }
+
   Future<void> updateUser(
       String uid, String name, String email, String profileImageUrl) async {
     try {
