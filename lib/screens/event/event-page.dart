@@ -3,8 +3,6 @@ import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
-// import 'event_model.dart'; // Import your event model
-// import 'event_service.dart'; // Import your event fetching function
 
 class EventDetailsPage extends StatelessWidget {
   final String eventId;
@@ -20,7 +18,6 @@ class EventDetailsPage extends StatelessWidget {
       future: db.getEventById(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // return Center(child: Text('Event not found'));
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -31,7 +28,9 @@ class EventDetailsPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Text('Event Details'),
+              backgroundColor: Colors.white,
+
+              // title: Text('Event Details'),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -72,17 +71,18 @@ class EventDetailsPage extends StatelessWidget {
                               fit: BoxFit.cover,
                               width: double.infinity,
                             ),
-                      // Positioned(
-                      //   top: 10,
-                      //   left: 10,
-                      //   child: Chip(
-                      //     label: Text(
-                      //       '${event.dateTime.day}, ${event.dateTime.month} at ${event.dateTime.hour}:${event.dateTime.minute}',
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //     backgroundColor: Colors.black54,
-                      //   ),
-                      // ),
+                      Positioned(
+                        top: 10,
+                        left: 10,
+                        child: Chip(
+                          label: Text(
+                            event.dateTime,
+                            // '${event.dateTime}, ${event.dateTime.month} at ${event.dateTime.hour}:${event.dateTime.minute}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.black54,
+                        ),
+                      ),
                     ],
                   ),
                   Padding(
@@ -95,14 +95,29 @@ class EventDetailsPage extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
-                        // Text(
-                        //   'Private · Event by ${event.organizerName}',
-                        //   style: TextStyle(color: Colors.grey),
-                        // ),
+                        FutureBuilder<UserModel?>(
+                          future: db.getUserById(event.ownerUid),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<UserModel?> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                'Private · Event by ${snapshot.data!.name}',
+                                style: TextStyle(color: Colors.grey),
+                              );
+                            } else {
+                              return Text('No data found');
+                            }
+                          },
+                        ),
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            // Icon(Icons.location_on),
+                            Icon(Icons.location_on),
                             SizedBox(width: 5),
                             Text(event.location),
                           ],
