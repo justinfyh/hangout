@@ -25,22 +25,31 @@ class Home extends StatelessWidget {
       value: DatabaseService(uid: uid).events,
       initialData: null,
       child: Scaffold(
-        backgroundColor: Colors.white, // Set background color here
+        backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
               backgroundColor: Colors.white,
               floating: true,
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.menu, color: Colors.black),
-                onPressed: () {},
+              // leading: IconButton(
+              //   icon: const Icon(Icons.menu, color: Colors.black),
+              //   onPressed: () {},
+              // ),
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text('Hangout', style: TextStyle(color: Colors.black)),
               ),
-              title:
-                  const Text('Hangout', style: TextStyle(color: Colors.black)),
               actions: [
+                // CircleAvatar(
+                //   radius: 15,
+                //   backgroundImage:
+                //       NetworkImage(userData?.profileImageUrl ?? ''),
+                //   backgroundColor: Colors.grey[300],
+                // ),
                 IconButton(
-                  icon: const Icon(Icons.person, color: Colors.black),
+                  icon: const Icon(Icons.chat_bubble_outline_rounded,
+                      color: Colors.black),
                   onPressed: () {},
                 ),
               ],
@@ -50,9 +59,6 @@ class Home extends StatelessWidget {
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      Text(userData?.name ?? "no email"),
-                      Text(uid),
-                      Text(userData?.email ?? "no email"),
                       EventTabs(),
                       MonthlyEvents(),
                       EventList(),

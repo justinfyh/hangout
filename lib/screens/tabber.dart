@@ -18,8 +18,6 @@ class Tabber extends StatelessWidget {
           CreateEventPage(),
           Notifications(),
           Profile()
-          // ProfileTab(),
-          // SettingsTab(),
         ],
       ),
       bottomNavigationBar: Container(
@@ -31,7 +29,6 @@ class Tabber extends StatelessWidget {
             Tab(icon: Icon(Icons.add_box)),
             Tab(icon: Icon(Icons.access_alarm)),
             Tab(icon: Icon(Icons.person_2)),
-            // Tab(icon: Icon(Icons.person_2), text: 'Profile'),
           ],
         ),
       ),

@@ -5,14 +5,19 @@ class EventTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: 10,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Chip(
             label: Text('My Events', style: TextStyle(color: Colors.white)),
             backgroundColor: Colors.orange,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
           Chip(
             label: Text('Friend\'s Events'),
