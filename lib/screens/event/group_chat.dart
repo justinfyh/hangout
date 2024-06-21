@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 
 class ChatMessage {
   final String text;
-  final bool isUser;
+  final String userId;
 
-  ChatMessage({required this.text, required this.isUser});
+  ChatMessage({required this.text, required this.userId});
 }
 
 class GroupChatPage extends StatefulWidget {
@@ -21,7 +21,6 @@ class GroupChatPage extends StatefulWidget {
 }
 
 class _GroupChatPageState extends State<GroupChatPage> {
-  final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -36,57 +35,62 @@ class _GroupChatPageState extends State<GroupChatPage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Group Chat for Event: ${widget.eventId}'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: db.getMessages(widget.eventId),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: db.getMessages(widget.eventId),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                List<ChatBubble> messages = snapshot.data!.docs.map((doc) {
-                  return ChatBubble(
-                    text: doc['text'],
-                    isUser: doc['userId'] == user.uid,
+                  List<ChatBubble> messages = snapshot.data!.docs.map((doc) {
+                    return ChatBubble(
+                      text: doc['text'],
+                      userId: doc['userId'],
+                      isUser: doc['userId'] == user.uid,
+                    );
+                  }).toList();
+
+                  return ListView(
+                    reverse: true,
+                    children: messages,
                   );
-                }).toList();
-
-                return ListView(
-                  reverse: true,
-                  children: messages,
-                );
-              },
+                },
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        hintText: 'Type a message',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
+                      onSubmitted: sendMessage,
                     ),
-                    onSubmitted: sendMessage,
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () => sendMessage(_controller.text),
-                ),
-              ],
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () => sendMessage(_controller.text),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -94,36 +98,90 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
 class ChatBubble extends StatelessWidget {
   final String text;
+  final String userId;
   final bool isUser;
 
-  ChatBubble({required this.text, required this.isUser});
+  ChatBubble({required this.text, required this.userId, required this.isUser});
+
+  Future<UserModel?> _getUser(String userId) async {
+    DatabaseService db = DatabaseService(uid: userId);
+    return await db.getUserById(userId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: BoxDecoration(
-          color: isUser ? Colors.orange : Colors.grey.shade200,
-          borderRadius: isUser
-              ? BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                )
-              : BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
+    return FutureBuilder<UserModel?>(
+      future: _getUser(userId),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container(); // Or some placeholder
+        }
+
+        UserModel? user = snapshot.data;
+        String userName = user?.name ?? 'Unknown';
+        String profileImageUrl = user?.profileImageUrl ?? '';
+
+        return Column(
+          crossAxisAlignment:
+              isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            if (!isUser)
+              Padding(
+                padding: const EdgeInsets.only(left: 40, top: 5),
+                child: Text(
+                  userName,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(color: isUser ? Colors.white : Colors.black),
-        ),
-      ),
+              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment:
+                  isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+              children: [
+                if (!isUser && profileImageUrl.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0, right: 8.0),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(profileImageUrl),
+                      radius: 15,
+                    ),
+                  ),
+                ],
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    color: isUser ? Colors.orange : Colors.grey.shade200,
+                    borderRadius: isUser
+                        ? const BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                          )
+                        : const BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                          ),
+                  ),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: isUser ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
