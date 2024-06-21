@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/event/group_chat.dart';
 import 'package:hangout/screens/event/status-button.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
@@ -160,6 +161,19 @@ class EventDetailsPage extends StatelessWidget {
                         //         isUser: true),
                         //   ],
                         // ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GroupChatPage(
+                                  eventId: eventId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text('Go to Group Chat'),
+                        ),
                       ],
                     ),
                   ),

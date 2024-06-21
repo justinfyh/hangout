@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 
@@ -126,21 +127,20 @@ class DatabaseService {
     }
   }
 
-  //  Future<void> addFriend(String uid, String friendUid) async {
-  //   try {
-  //     final docRef = await friendshipsCollection.add({
-  //       'friendshipId': "",
-  //       'user1Id': uid,
-  //       'user2Id': friendUid,
-  //       'createdAt': FieldValue.serverTimestamp(),
-  //     });
-  //     final docId = docRef.id;
+  Future<void> sendMessage(String eventId, String text) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
-  //     await friendshipsCollection.doc(docId).update({'friendshipId': docId});
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+    await FirebaseFirestore.instance
+        .collection('events')
+        .doc(eventId)
+        .collection('messages')
+        .add({
+      'text': text,
+      'timestamp': FieldValue.serverTimestamp(),
+      'userId': user.uid,
+    });
+  }
 
   Future<Event?> getEventById(String eventId) async {
     try {
@@ -208,5 +208,14 @@ class DatabaseService {
       print('Error: $error');
       return null; // Handle error by returning null
     });
+  }
+
+  Stream<QuerySnapshot> getMessages(String eventId) {
+    return FirebaseFirestore.instance
+        .collection('events')
+        .doc(eventId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots();
   }
 }

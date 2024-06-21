@@ -17,8 +17,8 @@ class _EventListState extends State<EventList> {
     final user = Provider.of<UserIdentity?>(context);
     final String uid = user!.uid;
     final events = Provider.of<List<Event>?>(context);
-    List<Event>? userEvents =
-        events?.where((event) => event.ownerUid == uid).toList();
+    List<Event>? userEvents = events?.toList();
+    // events?.where((event) => event.ownerUid == uid).toList();
 
     if (userEvents == null || userEvents.isEmpty) {
       return const Center(
