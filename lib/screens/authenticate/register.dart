@@ -95,8 +95,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: const InputDecoration(
-                        labelText: 'Password',
-                        border: const OutlineInputBorder()),
+                        labelText: 'Password', border: OutlineInputBorder()),
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {

@@ -12,20 +12,20 @@ class _GoingButtonState extends State<GoingButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
       decoration: BoxDecoration(
-        color: Color(0xffFF7A00), // Facebook-like blue color
+        color: const Color(0xffFF7A00), // Facebook-like blue color
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           dropdownColor: Colors.white,
           value: _selectedStatus,
-          hint: Text(
+          hint: const Text(
             'Going',
             style: TextStyle(color: Colors.white),
           ),
-          icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
           onChanged: (String? newValue) {
             setState(() {
               _selectedStatus = newValue;
@@ -37,7 +37,7 @@ class _GoingButtonState extends State<GoingButton> {
                 alignment: Alignment.center,
                 child: Text(
                   status,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -50,7 +50,7 @@ class _GoingButtonState extends State<GoingButton> {
               value: status,
               child: Text(
                 status,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             );
           }).toList(),

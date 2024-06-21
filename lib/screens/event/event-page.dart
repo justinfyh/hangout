@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class EventDetailsPage extends StatelessWidget {
   final String eventId;
 
-  EventDetailsPage({required this.eventId});
+  const EventDetailsPage({required this.eventId});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +19,11 @@ class EventDetailsPage extends StatelessWidget {
       future: db.getEventById(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData) {
-          return Center(child: Text('Event not found'));
+          return const Center(child: Text('Event not found'));
         } else {
           final event = snapshot.data!;
           return Scaffold(
@@ -79,7 +79,7 @@ class EventDetailsPage extends StatelessWidget {
                           label: Text(
                             event.dateTime,
                             // '${event.dateTime}, ${event.dateTime.month} at ${event.dateTime.hour}:${event.dateTime.minute}',
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           backgroundColor: Colors.black54,
                         ),
@@ -93,7 +93,7 @@ class EventDetailsPage extends StatelessWidget {
                       children: [
                         Text(
                           event.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         FutureBuilder<UserModel?>(
@@ -102,50 +102,50 @@ class EventDetailsPage extends StatelessWidget {
                               AsyncSnapshot<UserModel?> snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               return Text(
                                 'Private · Event by ${snapshot.data!.name}',
-                                style: TextStyle(color: Colors.grey),
+                                style: const TextStyle(color: Colors.grey),
                               );
                             } else {
-                              return Text('No data found');
+                              return const Text('No data found');
                             }
                           },
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
                         GoingButton(),
 
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(Icons.location_on),
-                            SizedBox(width: 5),
+                            const Icon(Icons.location_on),
+                            const SizedBox(width: 5),
                             Text(event.location),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             // CircleAvatar(radius: 10),
                             // CircleAvatar(radius: 10),
                             // CircleAvatar(radius: 10),
-                            Icon(Icons.check_circle_outline),
-                            SizedBox(width: 5),
+                            const Icon(Icons.check_circle_outline),
+                            const SizedBox(width: 5),
                             Text(
                                 '${event.going.length} going · ${event.interested.length} interested'),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        Text('What to expect',
+                        const SizedBox(height: 20),
+                        const Text('What to expect',
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(event.details),
-                        SizedBox(height: 20),
-                        Text('Party Chat',
+                        const SizedBox(height: 20),
+                        const Text('Party Chat',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         // Party chat bubbles example
                         // ListView(

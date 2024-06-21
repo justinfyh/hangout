@@ -6,12 +6,12 @@ import 'package:uuid/uuid.dart'; // For generating unique IDs
 class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final Uuid _uuid = Uuid(); // Initialize the UUID generator
-  String? _selectedImagePath; // Store the selected image path
+// Store the selected image path
 
   // Select an image from the gallery and store its path
   Future<String> pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     // print(image!.path);
 
@@ -30,9 +30,7 @@ class StorageService {
       return 'no image';
     }
 
-    print(imagePath);
-
-    File file = File(imagePath!);
+    File file = File(imagePath);
     String uniqueFileName = _uuid.v4(); // Generate a unique file name
 
     try {
@@ -46,7 +44,6 @@ class StorageService {
       String downloadURL = await ref.getDownloadURL();
       return downloadURL;
     } catch (e) {
-      print('Error uploading image: $e');
       return 'no image';
     }
   }
@@ -58,7 +55,6 @@ class StorageService {
           await _storage.ref().child('images/$fileName').getDownloadURL();
       return downloadURL;
     } catch (e) {
-      print('Error retrieving image: $e');
       return 'no image';
     }
   }

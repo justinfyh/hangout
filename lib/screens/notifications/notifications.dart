@@ -90,11 +90,11 @@ class _NotificationsState extends State<Notifications> {
                         // Handle accept action
                         db.acceptFriendRequest(uid, friend.uid);
                       },
-                      child: const Text('Accept'),
                       style: ElevatedButton.styleFrom(
                           // primary: Colors.orange,
                           // onPrimary: Colors.white,
                           ),
+                      child: const Text('Accept'),
                     ),
                     const SizedBox(width: 8),
                     OutlinedButton(
@@ -102,10 +102,10 @@ class _NotificationsState extends State<Notifications> {
                         // Handle delete action
                         db.declineFriendRequest(uid, friend.uid);
                       },
-                      child: const Text('Delete'),
                       style: OutlinedButton.styleFrom(
                           // primary: Colors.grey,
                           ),
+                      child: const Text('Delete'),
                     ),
                   ],
                 ),

@@ -27,15 +27,15 @@ class _ProfileState extends State<Profile> {
 
     final DatabaseService db = DatabaseService(uid: uid);
 
-    final StorageService _storage = StorageService();
+    final StorageService storage = StorageService();
 
-    final TextEditingController _nameController =
+    final TextEditingController nameController =
         TextEditingController(text: userData!.name);
-    final TextEditingController _emailController =
+    final TextEditingController emailController =
         TextEditingController(text: userData.email);
 
-    Future<void> _pickImage() async {
-      String? imagePath = await _storage.pickImage();
+    Future<void> pickImage() async {
+      String? imagePath = await storage.pickImage();
       if (imagePath != null) {
         setState(() {
           _selectedImagePath = imagePath;
@@ -44,9 +44,9 @@ class _ProfileState extends State<Profile> {
       }
     }
 
-    Future<void> _uploadImage() async {
+    Future<void> uploadImage() async {
       if (_selectedImagePath != null && newImage == true) {
-        String url = await _storage.uploadImage(_selectedImagePath!);
+        String url = await storage.uploadImage(_selectedImagePath!);
         setState(() {
           _downloadUrl = url;
         });
@@ -77,23 +77,23 @@ class _ProfileState extends State<Profile> {
                       as ImageProvider, // Show original profile image
             ),
             TextButton(
-              onPressed: _pickImage,
+              onPressed: pickImage,
               child: const Text('Edit profile image'),
             ),
             const SizedBox(height: 20),
             // _buildTextField('Name', _nameController),
-            _buildTextField('Username', _nameController),
-            _buildTextField('Email', _emailController),
+            _buildTextField('Username', nameController),
+            _buildTextField('Email', emailController),
             // _buildLinkField(),
             _buildTextField('Bio', _bioController, maxLines: 3),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                await _uploadImage();
+                await uploadImage();
                 await db.updateUser(
                     uid,
-                    _nameController.text,
-                    _emailController.text,
+                    nameController.text,
+                    emailController.text,
                     _downloadUrl ?? userData.profileImageUrl);
               },
               child: const Text('Save'),

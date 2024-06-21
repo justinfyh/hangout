@@ -45,8 +45,7 @@ class FriendSection extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundImage: friend.profileImageUrl != null &&
-                                  friend.profileImageUrl.isNotEmpty
+                          backgroundImage: friend.profileImageUrl.isNotEmpty
                               ? NetworkImage(friend.profileImageUrl)
                               : const AssetImage('assets/images/mascot.png'),
                         ),

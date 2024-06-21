@@ -31,7 +31,7 @@ class _ListFriendsState extends State<ListFriends> {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -65,15 +65,14 @@ class _ListFriendsState extends State<ListFriends> {
                     UserModel friend = friends[index];
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: friend.profileImageUrl != null &&
-                                friend.profileImageUrl.isNotEmpty
+                        backgroundImage: friend.profileImageUrl.isNotEmpty
                             ? NetworkImage(friend.profileImageUrl)
                             : const AssetImage('assets/images/mascot.png'),
                       ),
                       title: Text(friend.name),
                       // subtitle: Text('Last Hangout ${friend.lastHangout}'),
                       trailing: IconButton(
-                        icon: Icon(Icons.more_vert),
+                        icon: const Icon(Icons.more_vert),
                         onPressed: () {
                           // Handle more options
                         },
