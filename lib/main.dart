@@ -25,7 +25,6 @@ class MainApp extends StatelessWidget {
           theme: _buildTheme(Brightness.light),
           home: const DefaultTabController(length: 5, child: Wrapper())),
     );
-    // );
   }
 
   ThemeData _buildTheme(brightness) {
@@ -34,6 +33,7 @@ class MainApp extends StatelessWidget {
     return baseTheme.copyWith(
       textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
       primaryColor: const Color(0xffFF7A00),
+      scaffoldBackgroundColor: Colors.white,
     );
   }
 }

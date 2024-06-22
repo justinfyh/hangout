@@ -164,6 +164,33 @@ class DatabaseService {
     }
   }
 
+  Future<void> setGoingEvent(String userId, String eventId) async {
+    await eventsCollection.doc(eventId).update({
+      'going': FieldValue.arrayUnion([userId])
+    });
+    await eventsCollection.doc(eventId).update({
+      'interested': FieldValue.arrayRemove([userId])
+    });
+  }
+
+  Future<void> setInterestedEvent(String userId, String eventId) async {
+    await eventsCollection.doc(eventId).update({
+      'interested': FieldValue.arrayUnion([userId])
+    });
+    await eventsCollection.doc(eventId).update({
+      'going': FieldValue.arrayRemove([userId])
+    });
+  }
+
+  Future<void> setNotGoingEvent(String userId, String eventId) async {
+    await eventsCollection.doc(eventId).update({
+      'going': FieldValue.arrayRemove([userId])
+    });
+    await eventsCollection.doc(eventId).update({
+      'interested': FieldValue.arrayRemove([userId])
+    });
+  }
+
   // FROM SNAPSHOTS -----------------------------------------------------------
   List<Event> _eventListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

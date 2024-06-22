@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/event/group_chat.dart';
-import 'package:hangout/screens/event/status-button.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -31,8 +30,6 @@ class EventDetailsPage extends StatelessWidget {
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,
-
-              // title: Text('Event Details'),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -62,14 +59,14 @@ class EventDetailsPage extends StatelessWidget {
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
-                                  'assets/images/mascot.png', // Path to your placeholder image
+                                  'assets/images/mascot.png',
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                 );
                               },
                             )
                           : Image.asset(
-                              'assets/images/mascot.png', // Path to your placeholder image
+                              'assets/images/mascot.png',
                               fit: BoxFit.cover,
                               width: double.infinity,
                             ),
@@ -79,7 +76,6 @@ class EventDetailsPage extends StatelessWidget {
                         child: Chip(
                           label: Text(
                             event.dateTime,
-                            // '${event.dateTime}, ${event.dateTime.month} at ${event.dateTime.hour}:${event.dateTime.minute}',
                             style: const TextStyle(color: Colors.white),
                           ),
                           backgroundColor: Colors.black54,
@@ -117,9 +113,7 @@ class EventDetailsPage extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 10),
-
-                        GoingButton(),
-
+                        SelectStatusButton(event: event, userId: user.uid),
                         const SizedBox(height: 10),
                         Row(
                           children: [
@@ -131,9 +125,6 @@ class EventDetailsPage extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            // CircleAvatar(radius: 10),
-                            // CircleAvatar(radius: 10),
-                            // CircleAvatar(radius: 10),
                             const Icon(Icons.check_circle_outline),
                             const SizedBox(width: 5),
                             Text(
@@ -148,19 +139,6 @@ class EventDetailsPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         const Text('Party Chat',
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        // Party chat bubbles example
-                        // ListView(
-                        //   shrinkWrap: true,
-                        //   physics: NeverScrollableScrollPhysics(),
-                        //   children: [
-                        //     ChatBubble(text: 'Cool', isUser: false),
-                        //     ChatBubble(
-                        //         text: 'How does it work?', isUser: false),
-                        //     ChatBubble(
-                        //         text: 'You just edit any text...',
-                        //         isUser: true),
-                        //   ],
-                        // ),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -172,7 +150,7 @@ class EventDetailsPage extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Go to Group Chat'),
+                          child: const Text('Go to Group Chat'),
                         ),
                       ],
                     ),
@@ -187,25 +165,99 @@ class EventDetailsPage extends StatelessWidget {
   }
 }
 
-// class ChatBubble extends StatelessWidget {
-//   final String text;
-//   final bool isUser;
+class SelectStatusButton extends StatelessWidget {
+  final Event event;
+  final String userId;
 
-//   ChatBubble({required this.text, required this.isUser});
+  SelectStatusButton({required this.event, required this.userId});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Align(
-//       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-//       child: Container(
-//         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-//         margin: EdgeInsets.symmetric(vertical: 5),
-//         decoration: BoxDecoration(
-//           color: isUser ? Colors.orange : Colors.grey.shade200,
-//           borderRadius: BorderRadius.circular(15),
-//         ),
-//         child: Text(text),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    String currentStatus = 'Select Status';
+    if (event.going.contains(userId)) {
+      currentStatus = 'Going';
+    } else if (event.interested.contains(userId)) {
+      currentStatus = 'Interested';
+    }
+
+    return ElevatedButton(
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomSheetContent(
+              eventId: event.eventId,
+              userId: userId,
+              currentStatus: currentStatus,
+            );
+          },
+        );
+      },
+      child: Text(currentStatus),
+    );
+  }
+}
+
+class BottomSheetContent extends StatefulWidget {
+  final String eventId;
+  final String userId;
+  final String currentStatus;
+
+  BottomSheetContent({
+    required this.eventId,
+    required this.userId,
+    required this.currentStatus,
+  });
+
+  @override
+  _BottomSheetContentState createState() => _BottomSheetContentState();
+}
+
+class _BottomSheetContentState extends State<BottomSheetContent> {
+  String? _selectedStatus;
+  final List<String> _statuses = ['Going', 'Interested', 'Can\'t go'];
+  late DatabaseService db;
+
+  @override
+  void initState() {
+    super.initState();
+    db = DatabaseService(uid: widget.userId);
+    _selectedStatus = widget.currentStatus;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (String status in _statuses)
+            ListTile(
+              title: Text(status),
+              leading: Radio<String>(
+                value: status,
+                groupValue: _selectedStatus,
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedStatus = value;
+                    _updateStatusInDatabase(value);
+                  });
+                },
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _updateStatusInDatabase(String? status) async {
+    if (status == 'Going') {
+      await db.setGoingEvent(widget.userId, widget.eventId);
+    } else if (status == 'Interested') {
+      await db.setInterestedEvent(widget.userId, widget.eventId);
+    } else {
+      await db.setNotGoingEvent(widget.userId, widget.eventId);
+    }
+  }
+}
