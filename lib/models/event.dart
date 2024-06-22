@@ -8,6 +8,9 @@ class Event {
   final String eventId;
   final List<dynamic> going;
   final List<dynamic> interested;
+  final List<dynamic> notGoing;
+  final List<dynamic> invited;
+  final bool isPrivate;
 
   Event(
       {required this.name,
@@ -18,5 +21,8 @@ class Event {
       required this.imageUrl,
       required this.eventId,
       required this.going,
-      required this.interested});
+      required this.interested,
+      required this.notGoing,
+      required this.invited,
+      required this.isPrivate});
 }

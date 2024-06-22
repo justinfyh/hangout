@@ -20,11 +20,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
+  final TextEditingController _privacyController = TextEditingController();
 
   final StorageService _storage = StorageService();
+  final List<String> _invitedUsers = [];
 
   String? _selectedImagePath;
   String? _downloadUrl;
+  bool _isPrivate = false;
 
   @override
   void initState() {
@@ -34,48 +37,64 @@ class _CreateEventPageState extends State<CreateEventPage> {
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null) {
-      final TimeOfDay? pickedTime = await showTimePicker(
+    try {
+      final DateTime? pickedDate = await showDatePicker(
         context: context,
-        initialTime: TimeOfDay.now(),
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2101),
       );
-      if (pickedTime != null) {
-        final DateTime combined = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
+      if (pickedDate != null) {
+        final TimeOfDay? pickedTime = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
         );
-        setState(() {
-          _dateTimeController.text =
-              DateFormat('MMM dd, yyyy HH:mm').format(combined);
-        });
+        if (pickedTime != null) {
+          final DateTime combined = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          if (mounted) {
+            setState(() {
+              _dateTimeController.text =
+                  DateFormat('MMM dd, yyyy HH:mm').format(combined);
+            });
+          }
+        }
       }
+    } catch (e) {
+      debugPrint('Error selecting date and time: $e');
     }
   }
 
   Future<void> _pickImage() async {
-    String? imagePath = await _storage.pickImage();
-    if (imagePath != null) {
-      setState(() {
-        _selectedImagePath = imagePath;
-      });
+    try {
+      String? imagePath = await _storage.pickImage();
+      if (imagePath != null && mounted) {
+        setState(() {
+          _selectedImagePath = imagePath;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error picking image: $e');
     }
   }
 
   Future<void> _uploadImage() async {
-    if (_selectedImagePath != null) {
-      String url = await _storage.uploadImage(_selectedImagePath!);
-      setState(() {
-        _downloadUrl = url;
-      });
+    try {
+      if (_selectedImagePath != null) {
+        String url = await _storage.uploadImage(_selectedImagePath!);
+        if (mounted) {
+          setState(() {
+            _downloadUrl = url;
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Error uploading image: $e');
     }
   }
 
@@ -85,21 +104,118 @@ class _CreateEventPageState extends State<CreateEventPage> {
         DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now());
     _locationController.clear();
     _detailsController.clear();
-    setState(() {
-      _selectedImagePath = null;
-      _downloadUrl = null;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedImagePath = null;
+        _downloadUrl = null;
+        _isPrivate = false;
+        _invitedUsers.clear();
+      });
+    }
+  }
+
+  Future<void> _submitForm(DatabaseService db) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        // Show loading indicator
+        // showDialog(
+        //   context: context,
+        //   barrierDismissible: false,
+        //   builder: (BuildContext context) =>
+        //       const Center(child: CircularProgressIndicator()),
+        // );
+
+        // Upload image
+        await _uploadImage();
+
+        // Create event
+        await db.createEvent(
+          _eventNameController.text,
+          _dateTimeController.text,
+          _locationController.text,
+          _detailsController.text,
+          db.uid,
+          _downloadUrl ?? '',
+          _isPrivate,
+          _invitedUsers,
+        );
+
+        // Clear form
+        _clearForm();
+        // await _clearForm();
+        print("OKAY");
+        // Dismiss loading indicator and current page
+        // FocusScope.of(context).unfocus();
+
+        DefaultTabController.of(context).animateTo(0);
+
+        if (mounted) {
+          print("IN");
+
+          // Navigator.of(context).pop(); // Close loading indicator
+          // Navigator.of(context).pop(); // Close create event page
+        }
+        print("OUT");
+      } catch (e) {
+        debugPrint('Error creating event: $e');
+        // Handle error or exception (e.g., show error message)
+        // if (mounted) {
+        //   Navigator.of(context).pop(); // Close loading indicator
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(
+        //         content: Text('Failed to create event. Please try again.')),
+        //   );
+        // }
+      }
+    }
+  }
+
+  void _showPrivacyDialog() async {
+    bool? isPrivate = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Event Privacy'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: const Text('Public'),
+                onTap: () {
+                  Navigator.of(context).pop(false); // Return false (public)
+                },
+              ),
+              ListTile(
+                title: const Text('Private'),
+                onTap: () {
+                  Navigator.of(context).pop(true); // Return true (private)
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (isPrivate != null) {
+      setState(() {
+        _isPrivate = isPrivate;
+        _privacyController.text = _isPrivate ? 'Private' : 'Public';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
-    Provider.of<UserModel?>(context);
-    final String uid = user!.uid;
+    if (user == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final String uid = user.uid;
     final DatabaseService db = DatabaseService(uid: uid);
 
     return Scaffold(
-      backgroundColor: Colors.white, // Set background color here
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Create Event'),
         backgroundColor: Colors.white,
@@ -190,11 +306,61 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     labelText: 'Location', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                decoration: const InputDecoration(
-                    labelText: 'Who can see it?', border: OutlineInputBorder()),
+              // ElevatedButton(
+              //   onPressed: _showPrivacyDialog,
+              //   child: const Text('Who can see it?'),
+              // ),
+              InkWell(
+                onTap: _showPrivacyDialog,
+                child: IgnorePointer(
+                  child: TextFormField(
+                    controller: _privacyController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: _isPrivate ? 'Private' : 'Public',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
+              if (_isPrivate)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Invite Users'),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: _invitedUsers
+                          .map((user) => Chip(
+                                label: Text(user),
+                                onDeleted: () {
+                                  setState(() {
+                                    _invitedUsers.remove(user);
+                                  });
+                                },
+                              ))
+                          .toList(),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                          labelText: 'Enter email to invite',
+                          border: OutlineInputBorder()),
+                      onFieldSubmitted: (value) {
+                        if (value.isNotEmpty &&
+                            !_invitedUsers.contains(value)) {
+                          setState(() {
+                            _invitedUsers.add(value);
+                          });
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               TextFormField(
                 controller: _detailsController,
                 decoration: const InputDecoration(
@@ -204,24 +370,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    // Upload the image first
-                    await _uploadImage();
-                    // Then create the event with the download URL
-                    db.createEvent(
-                      _eventNameController.text,
-                      _dateTimeController.text,
-                      _locationController.text,
-                      _detailsController.text,
-                      uid,
-                      _downloadUrl ?? '',
-                    );
-
-                    _clearForm();
-                    DefaultTabController.of(context).animateTo(0);
-                  }
-                },
+                onPressed: () => _submitForm(db),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   textStyle: const TextStyle(fontSize: 18),
@@ -241,6 +390,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     _dateTimeController.dispose();
     _locationController.dispose();
     _detailsController.dispose();
+    _privacyController.dispose();
     super.dispose();
   }
 }

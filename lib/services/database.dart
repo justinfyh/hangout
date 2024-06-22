@@ -106,8 +106,15 @@ class DatabaseService {
   }
 
 //  EVENTS ------------------------------------------------------------------
-  Future<void> createEvent(String eventName, String dateTime, String location,
-      String details, String ownerUid, String imageUrl) async {
+  Future<void> createEvent(
+      String eventName,
+      String dateTime,
+      String location,
+      String details,
+      String ownerUid,
+      String imageUrl,
+      bool isPrivate,
+      List<String> invitedUsers) async {
     try {
       final docRef = await eventsCollection.add({
         'event_name': eventName,
@@ -117,7 +124,10 @@ class DatabaseService {
         'owner_uid': ownerUid,
         'image_url': imageUrl,
         'going': [ownerUid],
-        'interested': []
+        'interested': [],
+        'not_going': [],
+        'invited': invitedUsers,
+        'is_private': isPrivate,
       });
       final docId = docRef.id;
 
@@ -155,13 +165,28 @@ class DatabaseService {
             imageUrl: doc.get('image_url'),
             eventId: doc.get('event_id'),
             going: doc.get('going'),
-            interested: doc.get('interested'));
+            interested: doc.get('interested'),
+            notGoing: doc.get('not_going'),
+            invited: doc.get('invited'),
+            isPrivate: doc.get('is_private'));
       }
       return null;
     } catch (e) {
       print(e.toString());
       return null;
     }
+  }
+
+  Future<void> inviteUser(String eventId, String userId) async {
+    await eventsCollection.doc(eventId).update({
+      'invited': FieldValue.arrayUnion([userId]),
+    });
+  }
+
+  Future<void> removeInvite(String eventId, String userId) async {
+    await eventsCollection.doc(eventId).update({
+      'invited': FieldValue.arrayRemove([userId]),
+    });
   }
 
   Future<void> setGoingEvent(String userId, String eventId) async {
@@ -203,7 +228,10 @@ class DatabaseService {
           imageUrl: doc.get('image_url'),
           eventId: doc.get('event_id'),
           going: doc.get('going'),
-          interested: doc.get('interested'));
+          interested: doc.get('interested'),
+          notGoing: doc.get('not_going'),
+          invited: doc.get('invited'),
+          isPrivate: doc.get('is_private'));
     }).toList();
   }
 
@@ -233,7 +261,10 @@ class DatabaseService {
         imageUrl: data['image_url'] as String,
         eventId: data['event_id'] as String,
         going: data['going'] as List<dynamic>,
-        interested: data['interested'] as List<dynamic>);
+        interested: data['interested'] as List<dynamic>,
+        notGoing: data['not_going'],
+        invited: data['invited'],
+        isPrivate: data['is_private']);
   }
 
   // STREAMS ---------------------------------------------------------------------
