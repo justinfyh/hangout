@@ -15,17 +15,17 @@ class EventDetailsPage extends StatelessWidget {
     final user = Provider.of<UserIdentity?>(context);
     DatabaseService db = DatabaseService(uid: user!.uid);
 
-    return FutureBuilder<Event?>(
-      future: db.getEventById(eventId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return StreamBuilder<Event?>(
+      stream: db.getEvent(eventId),
+      builder: (context, eventSnapshot) {
+        if (eventSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData) {
+        } else if (eventSnapshot.hasError) {
+          return Center(child: Text('Error: ${eventSnapshot.error}'));
+        } else if (!eventSnapshot.hasData) {
           return const Center(child: Text('Event not found'));
         } else {
-          final event = snapshot.data!;
+          final event = eventSnapshot.data!;
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -37,7 +37,7 @@ class EventDetailsPage extends StatelessWidget {
                 children: [
                   Stack(
                     children: [
-                      event.imageUrl != ""
+                      event.imageUrl.isNotEmpty
                           ? Image.network(
                               event.imageUrl,
                               fit: BoxFit.cover,
@@ -95,8 +95,7 @@ class EventDetailsPage extends StatelessWidget {
                         ),
                         FutureBuilder<UserModel?>(
                           future: db.getUserById(event.ownerUid),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<UserModel?> snapshot) {
+                          builder: (BuildContext context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const CircularProgressIndicator();

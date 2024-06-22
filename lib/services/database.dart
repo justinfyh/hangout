@@ -221,6 +221,21 @@ class DatabaseService {
     );
   }
 
+  Event _eventFromSnapshot(DocumentSnapshot snapshot) {
+    var data = snapshot.data() as Map<String, dynamic>;
+
+    return Event(
+        name: data['event_name'] as String,
+        location: data['location'] as String,
+        dateTime: data['date_time'] as String,
+        details: data['details'] as String,
+        ownerUid: data['owner_uid'] as String,
+        imageUrl: data['image_url'] as String,
+        eventId: data['event_id'] as String,
+        going: data['going'] as List<dynamic>,
+        interested: data['interested'] as List<dynamic>);
+  }
+
   // STREAMS ---------------------------------------------------------------------
   Stream<List<Event>> get events {
     return eventsCollection.snapshots().map(_eventListFromSnapshot);
@@ -238,11 +253,17 @@ class DatabaseService {
   }
 
   Stream<QuerySnapshot> getMessages(String eventId) {
-    return FirebaseFirestore.instance
-        .collection('events')
+    return eventsCollection
         .doc(eventId)
         .collection('messages')
         .orderBy('timestamp', descending: true)
         .snapshots();
+  }
+
+  Stream<Event> getEvent(String eventId) {
+    return eventsCollection
+        .doc(eventId)
+        .snapshots()
+        .map((snapshot) => _eventFromSnapshot(snapshot));
   }
 }
