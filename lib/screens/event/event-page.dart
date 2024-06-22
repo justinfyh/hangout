@@ -233,17 +233,25 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           for (String status in _statuses)
-            ListTile(
-              title: Text(status),
-              leading: Radio<String>(
-                value: status,
-                groupValue: _selectedStatus,
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedStatus = value;
-                    _updateStatusInDatabase(value);
-                  });
-                },
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedStatus = status; // Update the selected status
+                  _updateStatusInDatabase(status); // Update status in database
+                });
+              },
+              child: ListTile(
+                title: Text(status),
+                leading: Radio<String>(
+                  value: status,
+                  groupValue: _selectedStatus,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedStatus = value!;
+                      _updateStatusInDatabase(value);
+                    });
+                  },
+                ),
               ),
             ),
         ],
