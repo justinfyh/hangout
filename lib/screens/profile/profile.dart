@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/services/database.dart';
@@ -34,6 +33,7 @@ class _ProfileState extends State<Profile> {
     final TextEditingController emailController =
         TextEditingController(text: userData.email);
 
+// FUNCTIONS
     Future<void> pickImage() async {
       String? imagePath = await storage.pickImage();
       if (imagePath != null) {
@@ -54,6 +54,7 @@ class _ProfileState extends State<Profile> {
       newImage = false;
     }
 
+// RENDER
     return Scaffold(
       backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
@@ -73,33 +74,47 @@ class _ProfileState extends State<Profile> {
                               userData.profileImageUrl.isNotEmpty
                           ? NetworkImage(
                               userData.profileImageUrl) // Load network image
-                          : AssetImage('assets/images/mascot.png'))
+                          : const AssetImage('assets/images/mascot.png'))
                       as ImageProvider, // Show original profile image
             ),
             TextButton(
               onPressed: pickImage,
-              child: const Text('Edit profile image'),
+              child: const Text('Edit profile image',
+                  style: TextStyle(color: Color(0xffFF7A00), fontSize: 11)),
+            ),
+            Text(
+              userData.name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "Bio here",
+              style: const TextStyle(fontSize: 12),
             ),
             const SizedBox(height: 20),
-            // _buildTextField('Name', _nameController),
             _buildTextField('Username', nameController),
             _buildTextField('Email', emailController),
-            // _buildLinkField(),
             _buildTextField('Bio', _bioController, maxLines: 3),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await uploadImage();
-                await db.updateUser(
-                    uid,
-                    nameController.text,
-                    emailController.text,
-                    _downloadUrl ?? userData.profileImageUrl);
-              },
-              child: const Text('Save'),
-            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          await uploadImage();
+          await db.updateUser(uid, nameController.text, emailController.text,
+              _downloadUrl ?? userData.profileImageUrl);
+        },
+        label: const Text(
+          'Save',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }

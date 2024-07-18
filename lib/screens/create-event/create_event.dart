@@ -245,6 +245,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         children: <Widget>[
                           ElevatedButton(
                             onPressed: _pickImage,
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor:
+                                  Theme.of(context).primaryColor, // Text color
+                            ),
                             child: const Text('Choose Image'),
                           ),
                         ],
@@ -274,31 +279,31 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     border: OutlineInputBorder()),
                 onTap: () => _selectDateTime(context),
               ),
-              const SizedBox(height: 20),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Add end time'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Repeat event'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('UTC+12'),
-                    ),
-                  ),
-                ],
-              ),
+              // const SizedBox(height: 20),
+              // Row(
+              //   children: <Widget>[
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed: () {},
+              //         child: const Text('Add end time'),
+              //       ),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed: () {},
+              //         child: const Text('Repeat event'),
+              //       ),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     Expanded(
+              //       child: ElevatedButton(
+              //         onPressed: () {},
+              //         child: const Text('UTC+12'),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 20),
               TextFormField(
                 controller: _locationController,
@@ -369,18 +374,32 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 maxLines: 3,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _submitForm(db),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  textStyle: const TextStyle(fontSize: 18),
-                ),
-                child: const Text('Create event'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () => _submitForm(db),
+              //   style: ElevatedButton.styleFrom(
+              //     padding: const EdgeInsets.symmetric(vertical: 15),
+              //     textStyle: const TextStyle(fontSize: 18),
+              //   ),
+              //   child: const Text('Create event'),
+              // ),
             ],
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _submitForm(db),
+        label: const Text(
+          'Create Event',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
