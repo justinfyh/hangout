@@ -21,16 +21,26 @@ class Tabber extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey.shade300, // Subtle grey color for the border
+              width: 0.8, // Border width
+            ),
+          ),
+        ),
         child: const TabBar(
           indicatorColor: Color(0xffFF7A00),
           labelColor: Color(0xffFF7A00),
+          unselectedLabelColor:
+              Colors.grey, // Set the unselected label color to grey
           tabs: [
-            Tab(icon: Icon(Icons.home)),
-            Tab(icon: Icon(Icons.person_add)),
-            Tab(icon: Icon(Icons.add_box)),
+            Tab(icon: Icon(Icons.home_outlined)),
+            Tab(icon: Icon(Icons.people_alt_outlined)),
+            Tab(icon: Icon(Icons.add_box_outlined)),
             Tab(icon: Icon(Icons.access_alarm)),
-            Tab(icon: Icon(Icons.person_2)),
+            Tab(icon: Icon(Icons.person_2_outlined)),
           ],
         ),
       ),

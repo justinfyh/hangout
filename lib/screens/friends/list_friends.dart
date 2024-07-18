@@ -3,6 +3,7 @@ import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/friends/add-friends.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
+// import 'package:timeago/timeago.dart' as timeago;
 
 class ListFriends extends StatefulWidget {
   const ListFriends({super.key});
@@ -22,12 +23,11 @@ class _ListFriendsState extends State<ListFriends> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Friends'),
+        title: const Text('Friends', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: const Icon(Icons.person_add,
-                color: Colors.black), // Add friend icon
+            icon: const Icon(Icons.person_add, color: Colors.black),
             onPressed: () {
               Navigator.push(
                 context,
@@ -73,24 +73,37 @@ class _ListFriendsState extends State<ListFriends> {
                   return friend.name.toLowerCase().contains(searchQuery);
                 }).toList();
 
-                return ListView.builder(
+                return ListView.separated(
                   itemCount: friends.length,
+                  separatorBuilder: (context, index) => Divider(
+                    color: Colors.grey.shade300,
+                    thickness: 0,
+                    // indent: 16,
+                    // endIndent: 16,
+                  ),
                   itemBuilder: (context, index) {
                     UserModel friend = friends[index];
                     return ListTile(
                       leading: CircleAvatar(
+                        radius: 25,
                         backgroundImage: friend.profileImageUrl.isNotEmpty
                             ? NetworkImage(friend.profileImageUrl)
-                            : const AssetImage('assets/images/mascot.png'),
+                            : const AssetImage('assets/images/mascot.png')
+                                as ImageProvider,
+                        backgroundColor: Colors.transparent,
                       ),
-                      title: Text(friend.name),
-                      // subtitle: Text('Last Hangout ${friend.lastHangout}'),
+                      title: Text(friend.name, style: TextStyle(fontSize: 12)),
+                      // subtitle: Text(
+                      //     'Last Hangout ${timeago.format(friend.lastHangout)}',
+                      //     style: TextStyle(color: Colors.grey)),
                       trailing: IconButton(
                         icon: const Icon(Icons.more_vert),
                         onPressed: () {
                           // Handle more options
                         },
                       ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0),
                     );
                   },
                 );

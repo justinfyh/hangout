@@ -28,7 +28,7 @@ class Home extends StatelessWidget {
         backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: [
-            SliverAppBar(
+            const SliverAppBar(
               backgroundColor: Colors.white,
               floating: true,
               elevation: 0,
@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    padding: EdgeInsets.fromLTRB(12, 10, 12, 0),
                     child: Column(
                       children: [
                         EventTabs(),
