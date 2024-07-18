@@ -389,7 +389,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _submitForm(db),
         label: const Text(
-          'Create Event',
+          'Create',
           style: TextStyle(color: Colors.white),
         ),
         icon: const Icon(
