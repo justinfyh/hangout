@@ -52,7 +52,9 @@ class FriendSection extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(friend.name,
                             style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600)),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                overflow: TextOverflow.ellipsis)),
                       ],
                     ),
                   );

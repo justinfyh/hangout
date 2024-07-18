@@ -136,26 +136,47 @@ class EventDetailsPage extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(event.details),
                         const SizedBox(height: 20),
-                        const Text('Party Chat',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GroupChatPage(
-                                  eventId: eventId,
-                                ),
-                              ),
-                            );
-                          },
-                          child: const Text('Go to Group Chat'),
-                        ),
+                        // const Text('Party Chat',
+                        //     style: TextStyle(fontWeight: FontWeight.bold)),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => GroupChatPage(
+                        //           eventId: eventId,
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   child: const Text('Go to Group Chat'),
+                        // ),
                       ],
                     ),
                   ),
                 ],
               ),
+            ),
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GroupChatPage(
+                      eventId: eventId,
+                    ),
+                  ),
+                );
+              },
+              label: const Text(
+                'Chat',
+                style: TextStyle(color: Colors.white),
+              ),
+              icon: const Icon(
+                Icons.chat_bubble_outline_rounded,
+                color: Colors.white,
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
             ),
           );
         }
@@ -180,6 +201,10 @@ class SelectStatusButton extends StatelessWidget {
     }
 
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor, // Text color
+      ),
       onPressed: () {
         showModalBottomSheet(
           context: context,

@@ -37,7 +37,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Group Chat for Event: ${widget.eventId}'),
+        title: Text('Group Chat'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
