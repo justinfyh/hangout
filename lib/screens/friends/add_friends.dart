@@ -53,7 +53,7 @@ class _AddFriendsState extends State<AddFriends> {
           ),
           Expanded(
             child: searchResults.isEmpty
-                ? Center(child: Text('No results found'))
+                ? const Center(child: Text('No results found'))
                 : ListView.builder(
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) {

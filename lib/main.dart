@@ -39,7 +39,7 @@ class MainApp extends StatelessWidget {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xffFF7A00), // Button color
-          textStyle: TextStyle(color: Colors.white), // Button text style
+          textStyle: const TextStyle(color: Colors.white), // Button text style
           // padding: EdgeInsets.symmetric(
           //     vertical: 12, horizontal: 24), // Button padding
         ),
@@ -47,15 +47,16 @@ class MainApp extends StatelessWidget {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: const Color(0xffFF7A00),
-          textStyle: TextStyle(color: Colors.white), // Text button text style
+          textStyle:
+              const TextStyle(color: Colors.white), // Text button text style
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(), // Text field border
+        hintStyle: TextStyle(color: Colors.orange),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-              color: const Color(0xffFF7A00),
-              width: 2.0), // Focused border color
+              color: Color(0xffFF7A00), width: 2.0), // Focused border color
         ),
         // Add more text field styles as needed
       ),

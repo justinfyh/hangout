@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
-import 'package:hangout/screens/friends/add-friends.dart';
+import 'package:hangout/screens/friends/add_friends.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 // import 'package:timeago/timeago.dart' as timeago;
@@ -32,7 +32,7 @@ class _ListFriendsState extends State<ListFriends> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddFriends(uid: user!.uid)),
+                    builder: (context) => AddFriends(uid: user.uid)),
               );
             },
           ),
@@ -92,7 +92,8 @@ class _ListFriendsState extends State<ListFriends> {
                                 as ImageProvider,
                         backgroundColor: Colors.transparent,
                       ),
-                      title: Text(friend.name, style: TextStyle(fontSize: 12)),
+                      title: Text(friend.name,
+                          style: const TextStyle(fontSize: 12)),
                       // subtitle: Text(
                       //     'Last Hangout ${timeago.format(friend.lastHangout)}',
                       //     style: TextStyle(color: Colors.grey)),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
-import 'package:hangout/screens/event/event-page.dart';
+import 'package:hangout/screens/event/event_page.dart';
 import 'package:provider/provider.dart';
 
 class EventList extends StatefulWidget {

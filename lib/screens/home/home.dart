@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(12, 10, 12, 0),
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
                     child: Column(
                       children: [
                         EventTabs(),

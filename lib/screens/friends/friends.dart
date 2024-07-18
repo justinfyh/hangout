@@ -1,13 +1,12 @@
 // friends.dart
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
-import 'package:hangout/screens/friends/add-friends.dart'; // Import the new screen
+import 'package:hangout/screens/friends/add_friends.dart'; // Import the new screen
 import 'package:hangout/screens/friends/list_friends.dart';
-import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
 class Friends extends StatelessWidget {
-  const Friends({Key? key}) : super(key: key);
+  const Friends({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +41,9 @@ class Friends extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: TextField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'Search for friends...',
                         prefixIcon: Icon(Icons.search),
                       ),

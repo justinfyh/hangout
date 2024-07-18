@@ -143,19 +143,19 @@ class _CreateEventPageState extends State<CreateEventPage> {
         // Clear form
         _clearForm();
         // await _clearForm();
-        print("OKAY");
+        // print("OKAY");
         // Dismiss loading indicator and current page
         // FocusScope.of(context).unfocus();
 
         DefaultTabController.of(context).animateTo(0);
 
         if (mounted) {
-          print("IN");
+          // print("IN");
 
           // Navigator.of(context).pop(); // Close loading indicator
           // Navigator.of(context).pop(); // Close create event page
         }
-        print("OUT");
+        // print("OUT");
       } catch (e) {
         debugPrint('Error creating event: $e');
         // Handle error or exception (e.g., show error message)
@@ -175,6 +175,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: const Text('Event Privacy'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -322,8 +323,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     controller: _privacyController,
                     readOnly: true,
                     decoration: InputDecoration(
-                      labelText: _isPrivate ? 'Private' : 'Public',
-                      border: OutlineInputBorder(),
+                      labelText: 'Privacy',
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                 ),

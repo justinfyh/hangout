@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ExploreSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
