@@ -47,32 +47,35 @@ class Home extends StatelessWidget {
                 //       NetworkImage(userData?.profileImageUrl ?? ''),
                 //   backgroundColor: Colors.grey[300],
                 // ),
-                IconButton(
-                  icon: const Icon(Icons.chat_bubble_outline_rounded,
-                      color: Colors.black),
-                  onPressed: () {},
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.chat_bubble_outline_rounded,
+                //       color: Colors.black),
+                //   onPressed: () {},
+                // ),
               ],
             ),
             SliverList(
               delegate: SliverChildListDelegate([
                 SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      EventTabs(),
-                      MonthlyEvents(),
-                      EventList(),
-                      FriendSection(),
-                      ExploreSection(),
-                      Center(
-                        child: FilledButton(
-                          onPressed: () async {
-                            await _auth.signOut();
-                          },
-                          child: const Text('Log Out'),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      children: [
+                        EventTabs(),
+                        MonthlyEvents(),
+                        EventList(),
+                        FriendSection(),
+                        ExploreSection(),
+                        Center(
+                          child: FilledButton(
+                            onPressed: () async {
+                              await _auth.signOut();
+                            },
+                            child: const Text('Log Out'),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ]),

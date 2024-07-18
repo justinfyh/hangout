@@ -4,12 +4,10 @@ class ExploreSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
+          padding: EdgeInsets.fromLTRB(0.0, 10, 0, 0),
           child: Text('Explore Other Events',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),

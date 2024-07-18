@@ -51,7 +51,7 @@ class _EventListState extends State<EventList> {
               );
             },
             child: Container(
-              margin: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -93,7 +93,7 @@ class _EventListState extends State<EventList> {
                   ),
                   Text(event.name,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(event.location,
+                  Text(event.dateTime,
                       style: const TextStyle(color: Colors.grey)),
                 ],
               ),

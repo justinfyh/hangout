@@ -21,9 +21,16 @@ class EventTabs extends StatelessWidget {
           ),
           Chip(
             label: Text('Friend\'s Events'),
+            backgroundColor: Colors.white24,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
           Chip(
             label: Text('Local'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
           Icon(Icons.search),
         ],

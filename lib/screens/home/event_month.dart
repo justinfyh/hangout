@@ -10,7 +10,7 @@ class MonthlyEvents extends StatelessWidget {
       children: [
         Text('This Month',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Text('June 2024', style: TextStyle(color: Colors.grey)),
+        Text('July 2024', style: TextStyle(color: Colors.grey)),
       ],
     );
   }
