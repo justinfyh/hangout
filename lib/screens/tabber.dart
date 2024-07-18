@@ -23,6 +23,8 @@ class Tabber extends StatelessWidget {
       bottomNavigationBar: Container(
         color: Colors.white,
         child: const TabBar(
+          indicatorColor: Color(0xffFF7A00),
+          labelColor: Color(0xffFF7A00),
           tabs: [
             Tab(icon: Icon(Icons.home)),
             Tab(icon: Icon(Icons.person_add)),
