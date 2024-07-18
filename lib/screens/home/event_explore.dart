@@ -28,23 +28,23 @@ class ExploreSection extends StatelessWidget {
         //     ),
         //   ),
         // ),
-        Image.network(
-          'https://firebasestorage.googleapis.com/v0/b/hangout-ef87b.appspot.com/o/westfield-albany.jpg?alt=media',
-          // Specify your Firebase Storage URL here
-          loadingBuilder: (BuildContext context, Widget child,
-              ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) return child;
-            return CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return Text('Error loading image');
-          },
-        ),
+        // Image.network(
+        //   'https://firebasestorage.googleapis.com/v0/b/hangout-ef87b.appspot.com/o/westfield-albany.jpg?alt=media',
+        //   // Specify your Firebase Storage URL here
+        //   loadingBuilder: (BuildContext context, Widget child,
+        //       ImageChunkEvent? loadingProgress) {
+        //     if (loadingProgress == null) return child;
+        //     return CircularProgressIndicator(
+        //       value: loadingProgress.expectedTotalBytes != null
+        //           ? loadingProgress.cumulativeBytesLoaded /
+        //               loadingProgress.expectedTotalBytes!
+        //           : null,
+        //     );
+        //   },
+        //   errorBuilder: (context, error, stackTrace) {
+        //     return Text('Error loading image');
+        //   },
+        // ),
       ],
     );
   }

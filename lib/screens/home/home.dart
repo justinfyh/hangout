@@ -67,11 +67,14 @@ class Home extends StatelessWidget {
                         FriendSection(),
                         ExploreSection(),
                         Center(
-                          child: FilledButton(
+                          child: ElevatedButton(
                             onPressed: () async {
                               await _auth.signOut();
                             },
-                            child: const Text('Log Out'),
+                            child: const Text(
+                              'Log Out',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],

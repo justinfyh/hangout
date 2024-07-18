@@ -22,18 +22,43 @@ class MainApp extends StatelessWidget {
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
-          theme: _buildTheme(Brightness.light),
-          home: const DefaultTabController(length: 5, child: Wrapper())),
+        theme: _buildTheme(Brightness.light),
+        home: const DefaultTabController(length: 5, child: Wrapper()),
+      ),
     );
   }
 
-  ThemeData _buildTheme(brightness) {
+  ThemeData _buildTheme(Brightness brightness) {
     var baseTheme = ThemeData(brightness: brightness);
 
     return baseTheme.copyWith(
       textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
       primaryColor: const Color(0xffFF7A00),
       scaffoldBackgroundColor: Colors.white,
+      // Define button and text field styles here
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xffFF7A00), // Button color
+          textStyle: TextStyle(color: Colors.white), // Button text style
+          // padding: EdgeInsets.symmetric(
+          //     vertical: 12, horizontal: 24), // Button padding
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: const Color(0xffFF7A00),
+          textStyle: TextStyle(color: Colors.white), // Text button text style
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(), // Text field border
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: const Color(0xffFF7A00),
+              width: 2.0), // Focused border color
+        ),
+        // Add more text field styles as needed
+      ),
     );
   }
 }
