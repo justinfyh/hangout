@@ -92,12 +92,13 @@ class DatabaseService {
     }
   }
 
-  Future<void> updateUser(
-      String uid, String name, String email, String profileImageUrl) async {
+  Future<void> updateUser(String uid, String name, String email, String bio,
+      String profileImageUrl) async {
     try {
       await usersCollection.doc(uid).update({
         'name': name,
         'email': email,
+        'bio': bio,
         'profileImageUrl': profileImageUrl,
       });
     } catch (e) {
@@ -255,6 +256,7 @@ class DatabaseService {
       uid: snapshot.id,
       name: data['name'] as String,
       email: data['email'] as String,
+      bio: data['bio'] as String,
       friends: List<String>.from(data['friends']),
       requests: List<String>.from(data['requests']),
       savedEvents: data['savedEvents'] as List<dynamic>,

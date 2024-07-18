@@ -7,6 +7,7 @@ class UserModel {
   final String uid;
   final String name;
   final String email;
+  final String bio;
   final List<dynamic> friends;
   final List<dynamic> savedEvents;
   final String profileImageUrl;
@@ -16,6 +17,7 @@ class UserModel {
       {required this.uid,
       required this.name,
       required this.email,
+      required this.bio,
       required this.friends,
       required this.savedEvents,
       required this.profileImageUrl,
@@ -26,6 +28,7 @@ class UserModel {
       'uid': uid,
       'name': name,
       'email': email,
+      'bio': bio,
       'profileImageUrl': profileImageUrl,
       'friends': friends,
       'savedEvents': savedEvents,
@@ -38,6 +41,7 @@ class UserModel {
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
+      bio: map['bio'] ?? '',
       profileImageUrl: map['profileImageUrl'] ?? '',
       savedEvents: map['savedEvents'] != null
           ? List<String>.from(map['savedEvents'])

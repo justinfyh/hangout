@@ -63,7 +63,7 @@ class _AddFriendsState extends State<AddFriends> {
                           backgroundImage: NetworkImage(user.profileImageUrl),
                         ),
                         title: Text(user.name),
-                        // subtitle: Text(user.bio),
+                        subtitle: Text(user.bio),
                         trailing: IconButton(
                           icon: const Icon(Icons.person_add),
                           onPressed: () {

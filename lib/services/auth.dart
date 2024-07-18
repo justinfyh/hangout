@@ -34,6 +34,7 @@ class AuthService {
             uid: user.uid,
             name: name,
             email: email,
+            bio: '',
             profileImageUrl: 'ee',
             friends: [],
             savedEvents: [],

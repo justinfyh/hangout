@@ -11,8 +11,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final TextEditingController _bioController = TextEditingController();
-
   String? _selectedImagePath;
   String? _downloadUrl;
   bool newImage = false;
@@ -32,6 +30,8 @@ class _ProfileState extends State<Profile> {
         TextEditingController(text: userData!.name);
     final TextEditingController emailController =
         TextEditingController(text: userData.email);
+    final TextEditingController bioController =
+        TextEditingController(text: userData.bio);
 
 // FUNCTIONS
     Future<void> pickImage() async {
@@ -89,13 +89,13 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Text(
-              "Bio here",
+              userData.bio,
               style: const TextStyle(fontSize: 12),
             ),
             const SizedBox(height: 20),
             _buildTextField('Username', nameController),
             _buildTextField('Email', emailController),
-            _buildTextField('Bio', _bioController, maxLines: 3),
+            _buildTextField('Bio', bioController, maxLines: 3),
             const SizedBox(height: 20),
           ],
         ),
@@ -104,7 +104,7 @@ class _ProfileState extends State<Profile> {
         onPressed: () async {
           await uploadImage();
           await db.updateUser(uid, nameController.text, emailController.text,
-              _downloadUrl ?? userData.profileImageUrl);
+              bioController.text, _downloadUrl ?? userData.profileImageUrl);
         },
         label: const Text(
           'Save',
