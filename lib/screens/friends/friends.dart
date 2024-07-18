@@ -1,21 +1,21 @@
+// friends.dart
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/friends/add-friends.dart'; // Import the new screen
 import 'package:hangout/screens/friends/list_friends.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
 class Friends extends StatelessWidget {
-  const Friends({Key? key});
+  const Friends({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
     final String uid = user!.uid;
 
-    final DatabaseService db = DatabaseService(uid: uid);
-
     return Scaffold(
-      backgroundColor: Colors.white, // Set background color here
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black),
@@ -24,8 +24,14 @@ class Friends extends StatelessWidget {
         title: const Text('Friends', style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person, color: Colors.black),
-            onPressed: () {},
+            icon: const Icon(Icons.person_add,
+                color: Colors.black), // Add friend icon
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddFriends(uid: uid)),
+              );
+            },
           ),
         ],
       ),
@@ -39,19 +45,20 @@ class Friends extends StatelessWidget {
                   Expanded(
                     child: TextField(
                       decoration: const InputDecoration(
-                        hintText: 'Add via username...',
+                        hintText: 'Search for friends...',
+                        prefixIcon: Icon(Icons.search),
                       ),
-                      onSubmitted: (username) {
-                        // Perform add friend operation using uid
-                        db.sendFriendRequest(uid, username);
-                      },
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(Icons.person_add,
+                        color: Colors.black), // Add friend icon
                     onPressed: () {
-                      // Alternatively, you can use a button to trigger the action
-                      // db.addFriend(uid, _username.text);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddFriends(uid: uid)),
+                      );
                     },
                   ),
                 ],

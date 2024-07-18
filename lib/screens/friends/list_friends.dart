@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/friends/add-friends.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,19 @@ class _ListFriendsState extends State<ListFriends> {
       appBar: AppBar(
         title: const Text('Friends'),
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_add,
+                color: Colors.black), // Add friend icon
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddFriends(uid: user!.uid)),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [

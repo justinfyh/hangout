@@ -105,6 +105,19 @@ class DatabaseService {
     }
   }
 
+  Future<List<UserModel>> searchUsers(String query) async {
+    final result = await usersCollection
+        .where('name', isGreaterThanOrEqualTo: query)
+        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+    if (result.docs.isEmpty) {
+      return [];
+    }
+    return result.docs
+        .map((doc) => UserModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
+  }
+
 //  EVENTS ------------------------------------------------------------------
   Future<void> createEvent(
       String eventName,

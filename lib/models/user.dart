@@ -35,12 +35,16 @@ class UserModel {
 
   static UserModel fromMap(Map<String, dynamic> map) {
     return UserModel(
-        uid: map['uid'],
-        name: map['name'],
-        email: map['email'],
-        profileImageUrl: map['profileImageUrl'],
-        savedEvents: List<String>.from(map['savedEvents']),
-        friends: List<String>.from(map['friends']),
-        requests: List<String>.from(map['requests']));
+      uid: map['uid'] ?? '',
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      profileImageUrl: map['profileImageUrl'] ?? '',
+      savedEvents: map['savedEvents'] != null
+          ? List<String>.from(map['savedEvents'])
+          : [],
+      friends: map['friends'] != null ? List<String>.from(map['friends']) : [],
+      requests:
+          map['requests'] != null ? List<String>.from(map['requests']) : [],
+    );
   }
 }
