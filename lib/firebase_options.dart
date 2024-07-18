@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -33,10 +30,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -63,9 +57,29 @@ class DefaultFirebaseOptions {
     messagingSenderId: '914222314101',
     projectId: 'hangout-ef87b',
     storageBucket: 'hangout-ef87b.appspot.com',
-    androidClientId: '914222314101-ocve5uqhkbake63ov4k3s2hdbvsh52ma.apps.googleusercontent.com',
+    androidClientId: '914222314101-0iskomlfplc32mv3ahg35a415c19vd8i.apps.googleusercontent.com',
     iosClientId: '914222314101-cr66al3e1llscj0dup6manihtb6tej8k.apps.googleusercontent.com',
     iosBundleId: 'com.example.hangout',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBqxe4TWo0FYn_ltEF__wmYWlVkEvTL0-s',
+    appId: '1:914222314101:web:acf4b8fe045a80550cbe3c',
+    messagingSenderId: '914222314101',
+    projectId: 'hangout-ef87b',
+    authDomain: 'hangout-ef87b.firebaseapp.com',
+    storageBucket: 'hangout-ef87b.appspot.com',
+    measurementId: 'G-8NYVB6PYH7',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBqxe4TWo0FYn_ltEF__wmYWlVkEvTL0-s',
+    appId: '1:914222314101:web:eceeff195581aad50cbe3c',
+    messagingSenderId: '914222314101',
+    projectId: 'hangout-ef87b',
+    authDomain: 'hangout-ef87b.firebaseapp.com',
+    storageBucket: 'hangout-ef87b.appspot.com',
+    measurementId: 'G-F0P5F8ZVD5',
   );
 
 }
