@@ -10,15 +10,21 @@ import 'package:hangout/services/auth.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
 
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
-    final userData = Provider.of<UserModel?>(context);
+    // final userData = Provider.of<UserModel?>(context);
     final String uid = user!.uid;
 
     return StreamProvider<List<Event>?>.value(
@@ -32,27 +38,10 @@ class Home extends StatelessWidget {
               backgroundColor: Colors.white,
               floating: true,
               elevation: 0,
-              // leading: IconButton(
-              //   icon: const Icon(Icons.menu, color: Colors.black),
-              //   onPressed: () {},
-              // ),
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 title: Text('Hangout', style: TextStyle(color: Colors.black)),
               ),
-              actions: [
-                // CircleAvatar(
-                //   radius: 15,
-                //   backgroundImage:
-                //       NetworkImage(userData?.profileImageUrl ?? ''),
-                //   backgroundColor: Colors.grey[300],
-                // ),
-                // IconButton(
-                //   icon: const Icon(Icons.chat_bubble_outline_rounded,
-                //       color: Colors.black),
-                //   onPressed: () {},
-                // ),
-              ],
             ),
             SliverList(
               delegate: SliverChildListDelegate([
@@ -61,9 +50,22 @@ class Home extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
                     child: Column(
                       children: [
-                        EventTabs(),
+                        EventTabs(
+                          onTabSelected: (index) {
+                            setState(() {
+                              selectedIndex = index;
+                            });
+                          },
+                          selectedIndex: selectedIndex,
+                        ),
                         MonthlyEvents(),
-                        EventList(),
+                        EventList(
+                          events: _filterEvents(
+                            Provider.of<List<Event>?>(context) ?? [],
+                            selectedIndex,
+                            uid,
+                          ),
+                        ),
                         FriendSection(),
                         ExploreSection(),
                         Center(
@@ -87,5 +89,18 @@ class Home extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Event> _filterEvents(List<Event> events, int index, String uid) {
+    switch (index) {
+      case 0:
+        return events.where((event) => event.ownerUid == uid).toList();
+      case 1:
+        return events.where((event) => event.invited.contains(uid)).toList();
+      // case 2:
+      //   return events.where((event) => event.isLocal).toList();
+      default:
+        return events;
+    }
   }
 }

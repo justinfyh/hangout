@@ -4,25 +4,19 @@ import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/event/event_page.dart';
 import 'package:provider/provider.dart';
 
-class EventList extends StatefulWidget {
-  const EventList({super.key});
+class EventList extends StatelessWidget {
+  final List<Event> events;
 
-  @override
-  State<EventList> createState() => _EventListState();
-}
+  const EventList({super.key, required this.events});
 
-class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
     final String uid = user!.uid;
-    final events = Provider.of<List<Event>?>(context);
-    List<Event>? userEvents = events?.toList();
-    // events?.where((event) => event.ownerUid == uid).toList();
 
-    if (userEvents == null || userEvents.isEmpty) {
+    if (events.isEmpty) {
       return const Center(
-        child: Text('No userEvents available'),
+        child: Text('No events available'),
       );
     }
 
@@ -30,9 +24,9 @@ class _EventListState extends State<EventList> {
       height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: userEvents.length,
+        itemCount: events.length,
         itemBuilder: (context, index) {
-          final event = userEvents[index];
+          final event = events[index];
           final imageUrl = event.imageUrl.isNotEmpty &&
                   Uri.tryParse(event.imageUrl)?.hasAbsolutePath == true
               ? event.imageUrl
