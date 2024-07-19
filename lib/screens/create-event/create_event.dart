@@ -25,6 +25,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final StorageService _storage = StorageService();
   final List<String> _invitedUsers = [];
   List<UserModel> _suggestedUsers = []; // List to hold suggested UserModels
+  Map<String, String> _userNames = {}; // Map to cache user IDs and usernames
 
   String? _selectedImagePath;
   String? _downloadUrl;
@@ -114,6 +115,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         _isPrivate = false;
         _invitedUsers.clear();
         _suggestedUsers.clear();
+        _userNames.clear(); // Clear cached usernames
       });
     }
   }
@@ -186,6 +188,21 @@ class _CreateEventPageState extends State<CreateEventPage> {
   Future<List<UserModel>> fetchUserSuggestions(String query, String uid) async {
     final userModels = await DatabaseService(uid: uid).searchUsers(query);
     return userModels;
+  }
+
+  Future<void> fetchUsernames(List<String> userIds) async {
+    final dbService = DatabaseService(
+        uid: Provider.of<UserIdentity?>(context, listen: false)!.uid);
+    for (String userId in userIds) {
+      if (!_userNames.containsKey(userId)) {
+        final user = await dbService.getUserById(userId);
+        if (user != null) {
+          setState(() {
+            _userNames[userId] = user.name;
+          });
+        }
+      }
+    }
   }
 
   void onSearchChanged() async {
@@ -308,16 +325,19 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     Wrap(
                       spacing: 8.0,
                       runSpacing: 4.0,
-                      children: _invitedUsers
-                          .map((userId) => Chip(
-                                label: Text(userId), // Display user ID
-                                onDeleted: () {
-                                  setState(() {
-                                    _invitedUsers.remove(userId);
-                                  });
-                                },
-                              ))
-                          .toList(),
+                      children: _invitedUsers.map((userId) {
+                        final username = _userNames[userId] ?? 'Loading...';
+                        return Chip(
+                          label: Text(username), // Display username
+                          onDeleted: () {
+                            setState(() {
+                              _invitedUsers.remove(userId);
+                              fetchUsernames(
+                                  _invitedUsers); // Refresh usernames
+                            });
+                          },
+                        );
+                      }).toList(),
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
@@ -344,6 +364,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                         .uid); // Add user ID to invited list
                                     _searchController.clear();
                                     _suggestedUsers.clear();
+                                    fetchUsernames(
+                                        _invitedUsers); // Refresh usernames
                                   });
                                 }
                               },
