@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                           },
                           selectedIndex: selectedIndex,
                         ),
-                        MonthlyEvents(),
+                        const MonthlyEvents(),
                         EventList(
                           events: _filterEvents(
                             Provider.of<List<Event>?>(context) ?? [],

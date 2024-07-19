@@ -51,8 +51,8 @@ class EventList extends StatelessWidget {
                 children: [
                   const SizedBox(height: 8),
                   Container(
-                    width: 160,
-                    height: 160,
+                    width: 150,
+                    height: 150,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                     ),

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/services/database.dart';
@@ -21,9 +20,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _privacyController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   final StorageService _storage = StorageService();
   final List<String> _invitedUsers = [];
+  List<UserModel> _suggestedUsers = []; // List to hold suggested UserModels
 
   String? _selectedImagePath;
   String? _downloadUrl;
@@ -34,6 +35,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     super.initState();
     _dateTimeController.text =
         DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now());
+    _searchController.addListener(onSearchChanged);
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -73,7 +75,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   Future<void> _pickImage() async {
     try {
       String? imagePath = await _storage.pickImage();
-      if (imagePath != null && mounted) {
+      if (mounted) {
         setState(() {
           _selectedImagePath = imagePath;
         });
@@ -104,12 +106,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
         DateFormat('MMM dd, yyyy HH:mm').format(DateTime.now());
     _locationController.clear();
     _detailsController.clear();
+    _searchController.clear();
     if (mounted) {
       setState(() {
         _selectedImagePath = null;
         _downloadUrl = null;
         _isPrivate = false;
         _invitedUsers.clear();
+        _suggestedUsers.clear();
       });
     }
   }
@@ -117,18 +121,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
   Future<void> _submitForm(DatabaseService db) async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Show loading indicator
-        // showDialog(
-        //   context: context,
-        //   barrierDismissible: false,
-        //   builder: (BuildContext context) =>
-        //       const Center(child: CircularProgressIndicator()),
-        // );
-
-        // Upload image
         await _uploadImage();
 
-        // Create event
         await db.createEvent(
           _eventNameController.text,
           _dateTimeController.text,
@@ -140,32 +134,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
           _invitedUsers,
         );
 
-        // Clear form
         _clearForm();
-        // await _clearForm();
-        // print("OKAY");
-        // Dismiss loading indicator and current page
-        // FocusScope.of(context).unfocus();
 
         DefaultTabController.of(context).animateTo(0);
 
         if (mounted) {
-          // print("IN");
-
-          // Navigator.of(context).pop(); // Close loading indicator
           // Navigator.of(context).pop(); // Close create event page
         }
-        // print("OUT");
       } catch (e) {
         debugPrint('Error creating event: $e');
-        // Handle error or exception (e.g., show error message)
-        // if (mounted) {
-        //   Navigator.of(context).pop(); // Close loading indicator
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(
-        //         content: Text('Failed to create event. Please try again.')),
-        //   );
-        // }
       }
     }
   }
@@ -203,6 +180,27 @@ class _CreateEventPageState extends State<CreateEventPage> {
         _isPrivate = isPrivate;
         _privacyController.text = _isPrivate ? 'Private' : 'Public';
       });
+    }
+  }
+
+  Future<List<UserModel>> fetchUserSuggestions(String query, String uid) async {
+    final userModels = await DatabaseService(uid: uid).searchUsers(query);
+    return userModels;
+  }
+
+  void onSearchChanged() async {
+    final query = _searchController.text.toLowerCase();
+    final user = Provider.of<UserIdentity?>(context, listen: false);
+    if (user != null) {
+      final allUsers = await fetchUserSuggestions(query, user.uid);
+
+      if (mounted) {
+        setState(() {
+          _suggestedUsers = allUsers
+              .where((user) => user.name.toLowerCase().contains(query))
+              .toList();
+        });
+      }
     }
   }
 
@@ -280,31 +278,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     border: OutlineInputBorder()),
                 onTap: () => _selectDateTime(context),
               ),
-              // const SizedBox(height: 20),
-              // Row(
-              //   children: <Widget>[
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed: () {},
-              //         child: const Text('Add end time'),
-              //       ),
-              //     ),
-              //     const SizedBox(width: 10),
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed: () {},
-              //         child: const Text('Repeat event'),
-              //       ),
-              //     ),
-              //     const SizedBox(width: 10),
-              //     Expanded(
-              //       child: ElevatedButton(
-              //         onPressed: () {},
-              //         child: const Text('UTC+12'),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 20),
               TextFormField(
                 controller: _locationController,
@@ -312,10 +285,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     labelText: 'Location', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 20),
-              // ElevatedButton(
-              //   onPressed: _showPrivacyDialog,
-              //   child: const Text('Who can see it?'),
-              // ),
               InkWell(
                 onTap: _showPrivacyDialog,
                 child: IgnorePointer(
@@ -340,11 +309,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       spacing: 8.0,
                       runSpacing: 4.0,
                       children: _invitedUsers
-                          .map((user) => Chip(
-                                label: Text(user),
+                          .map((userId) => Chip(
+                                label: Text(userId), // Display user ID
                                 onDeleted: () {
                                   setState(() {
-                                    _invitedUsers.remove(user);
+                                    _invitedUsers.remove(userId);
                                   });
                                 },
                               ))
@@ -352,18 +321,36 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: _searchController,
                       decoration: const InputDecoration(
-                          labelText: 'Enter email to invite',
+                          labelText: 'Search username',
                           border: OutlineInputBorder()),
-                      onFieldSubmitted: (value) {
-                        if (value.isNotEmpty &&
-                            !_invitedUsers.contains(value)) {
-                          setState(() {
-                            _invitedUsers.add(value);
-                          });
-                        }
-                      },
                     ),
+                    const SizedBox(height: 10),
+                    if (_suggestedUsers.isNotEmpty)
+                      Container(
+                        height: 200,
+                        child: ListView.builder(
+                          itemCount: _suggestedUsers.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = _suggestedUsers[index];
+                            return ListTile(
+                              title:
+                                  Text(suggestion.name), // Display user's name
+                              onTap: () {
+                                if (!_invitedUsers.contains(suggestion.uid)) {
+                                  setState(() {
+                                    _invitedUsers.add(suggestion
+                                        .uid); // Add user ID to invited list
+                                    _searchController.clear();
+                                    _suggestedUsers.clear();
+                                  });
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -375,14 +362,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 maxLines: 3,
               ),
               const SizedBox(height: 20),
-              // ElevatedButton(
-              //   onPressed: () => _submitForm(db),
-              //   style: ElevatedButton.styleFrom(
-              //     padding: const EdgeInsets.symmetric(vertical: 15),
-              //     textStyle: const TextStyle(fontSize: 18),
-              //   ),
-              //   child: const Text('Create event'),
-              // ),
             ],
           ),
         ),
@@ -399,8 +378,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -411,6 +388,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     _locationController.dispose();
     _detailsController.dispose();
     _privacyController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 }

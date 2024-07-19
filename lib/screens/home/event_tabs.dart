@@ -32,7 +32,8 @@ class EventTabs extends StatelessWidget {
           style: TextStyle(
               color: selectedIndex == index ? Colors.white : Colors.white),
         ),
-        backgroundColor: selectedIndex == index ? Colors.orange : Colors.grey,
+        backgroundColor:
+            selectedIndex == index ? Color(0xffFF7A00) : Colors.grey,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8), // Decreased border radius
           side: BorderSide(style: BorderStyle.none), // Removed border
