@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                     // textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 30,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -100,12 +100,19 @@ class _LoginState extends State<Login> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  TextButton(
+                      onPressed: () => (),
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.grey),
+                      )),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        backgroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Color(0xffFF7A00),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     child: const Text(
@@ -114,11 +121,41 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey[400], // Line color
+                          thickness: 1, // Line thickness
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "or",
+                          style: TextStyle(
+                            color: Colors.grey[600], // Text color
+                            fontSize: 12, // Text size
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey[400], // Line color
+                          thickness: 1, // Line thickness
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   ElevatedButton.icon(
                     onPressed: _handleGoogleSignIn,
-                    icon: Image.asset('assets/icons/google.png'),
+                    icon: Image.asset(
+                      'assets/icons/google.png',
+                      height: 20,
+                    ),
                     style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),

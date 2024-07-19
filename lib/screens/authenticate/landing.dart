@@ -29,17 +29,33 @@ class Landing extends StatelessWidget {
                 Image.asset('assets/images/mascot.png'),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Login()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Login()),
+                    );
                   },
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Color(0xffFF7A00)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        const Color(0xffFF7A00), // Background color
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 60,
+                        vertical:
+                            15), // Adjust padding to make the button wider and taller
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Adjust the border radius
+                    ),
                   ),
                   child: const Text(
                     'Log in',
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 8,
                 ),
                 TextButton(
                     onPressed: () {

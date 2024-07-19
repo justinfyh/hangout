@@ -252,6 +252,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       padding: const EdgeInsets.all(10.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -261,8 +262,8 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
               onTap: () {
                 setState(() {
                   _selectedStatus = status; // Update the selected status
-                  _updateStatusInDatabase(status); // Update status in database
                 });
+                _updateStatusInDatabase(status); // Update status in database
               },
               child: ListTile(
                 title: Text(status),
@@ -272,8 +273,9 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                   onChanged: (String? value) {
                     setState(() {
                       _selectedStatus = value!;
-                      _updateStatusInDatabase(value);
                     });
+                    _updateStatusInDatabase(
+                        value!); // Update status in database
                   },
                 ),
               ),
@@ -283,7 +285,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
     );
   }
 
-  void _updateStatusInDatabase(String? status) async {
+  void _updateStatusInDatabase(String status) async {
     if (status == 'Going') {
       await db.setGoingEvent(widget.userId, widget.eventId);
     } else if (status == 'Interested') {
@@ -291,5 +293,8 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
     } else {
       await db.setNotGoingEvent(widget.userId, widget.eventId);
     }
+
+    // Close the bottom sheet after updating the status
+    Navigator.pop(context);
   }
 }
