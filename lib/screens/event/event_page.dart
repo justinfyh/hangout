@@ -103,7 +103,7 @@ class EventDetailsPage extends StatelessWidget {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               return Text(
-                                'Private · Event by ${snapshot.data!.name}',
+                                '${event.isPrivate ? ('Private') : ('Public')} · Event by ${snapshot.data!.name}',
                                 style: const TextStyle(color: Colors.grey),
                               );
                             } else {

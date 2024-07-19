@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
-import 'package:hangout/models/user.dart';
+// import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/event/event_page.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class EventList extends StatelessWidget {
   final List<Event> events;
@@ -11,8 +11,8 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserIdentity?>(context);
-    final String uid = user!.uid;
+    // final user = Provider.of<UserIdentity?>(context);
+    // final String uid = user!.uid;
 
     if (events.isEmpty) {
       return const Center(

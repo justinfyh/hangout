@@ -97,8 +97,8 @@ class _HomeState extends State<Home> {
         return events.where((event) => event.ownerUid == uid).toList();
       case 1:
         return events.where((event) => event.invited.contains(uid)).toList();
-      // case 2:
-      //   return events.where((event) => event.isLocal).toList();
+      case 2:
+        return events.where((event) => !event.isPrivate).toList();
       default:
         return events;
     }
