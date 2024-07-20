@@ -40,7 +40,7 @@ class GoingButton extends StatelessWidget {
               dropdownColor: Colors.white,
               value: currentStatus,
               hint: const Text(
-                'Select Status',
+                'Select Statuss',
                 style: TextStyle(color: Colors.white),
               ),
               icon: const Icon(Icons.arrow_drop_down, color: Colors.white),

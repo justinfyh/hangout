@@ -262,10 +262,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           ElevatedButton(
                             onPressed: _pickImage,
                             style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor:
-                                  Theme.of(context).primaryColor, // Text color
-                            ),
+                                foregroundColor: Colors.white,
+                                backgroundColor: Theme.of(context)
+                                    .primaryColor, // Text color
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12))),
                             child: const Text('Choose Image'),
                           ),
                         ],
@@ -328,7 +329,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       children: _invitedUsers.map((userId) {
                         final username = _userNames[userId] ?? 'Loading...';
                         return Chip(
-                          label: Text(username), // Display username
+                          label: Text(
+                            username,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ), // Display username
                           onDeleted: () {
                             setState(() {
                               _invitedUsers.remove(userId);
@@ -336,6 +342,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   _invitedUsers); // Refresh usernames
                             });
                           },
+                          backgroundColor: Color(0xffFF7A00),
                         );
                       }).toList(),
                     ),
@@ -349,26 +356,38 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     const SizedBox(height: 10),
                     if (_suggestedUsers.isNotEmpty)
                       Container(
-                        height: 200,
+                        height: 100,
                         child: ListView.builder(
                           itemCount: _suggestedUsers.length,
                           itemBuilder: (context, index) {
                             final suggestion = _suggestedUsers[index];
-                            return ListTile(
-                              title:
-                                  Text(suggestion.name), // Display user's name
-                              onTap: () {
-                                if (!_invitedUsers.contains(suggestion.uid)) {
-                                  setState(() {
-                                    _invitedUsers.add(suggestion
-                                        .uid); // Add user ID to invited list
-                                    _searchController.clear();
-                                    _suggestedUsers.clear();
-                                    fetchUsernames(
-                                        _invitedUsers); // Refresh usernames
-                                  });
-                                }
-                              },
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 0.0), // Space between items
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .white, // Background color of each item
+                                border: Border.all(
+                                  color: Colors
+                                      .grey[300]!, // Light grey border color
+                                  width: 1.0, // Border width
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    0.0), // Rounded corners
+                              ),
+                              child: ListTile(
+                                title: Text(suggestion.name),
+                                onTap: () {
+                                  if (!_invitedUsers.contains(suggestion.uid)) {
+                                    setState(() {
+                                      _invitedUsers.add(suggestion.uid);
+                                      _searchController.clear();
+                                      _suggestedUsers.clear();
+                                      fetchUsernames(_invitedUsers);
+                                    });
+                                  }
+                                },
+                              ),
                             );
                           },
                         ),

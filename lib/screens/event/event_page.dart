@@ -76,9 +76,11 @@ class EventDetailsPage extends StatelessWidget {
                         child: Chip(
                           label: Text(
                             event.dateTime,
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
                           ),
-                          backgroundColor: Colors.black54,
+                          backgroundColor: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -147,21 +149,6 @@ class EventDetailsPage extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(event.details),
                         const SizedBox(height: 20),
-                        // const Text('Party Chat',
-                        //     style: TextStyle(fontWeight: FontWeight.bold)),
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => GroupChatPage(
-                        //           eventId: eventId,
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        //   child: const Text('Go to Group Chat'),
-                        // ),
                       ],
                     ),
                   ),

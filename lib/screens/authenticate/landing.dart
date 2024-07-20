@@ -8,7 +8,6 @@ class Landing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(),
         body: DecoratedBox(
             decoration: const BoxDecoration(
                 image: DecorationImage(
