@@ -81,7 +81,7 @@ class _NotificationsState extends State<Notifications> {
                   backgroundImage: NetworkImage(friend.profileImageUrl),
                 ),
                 title: Text(friend.name),
-                subtitle: Text('sent you a friend request'),
+                subtitle: const Text('sent you a friend request'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

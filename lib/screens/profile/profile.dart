@@ -57,7 +57,6 @@ class _ProfileState extends State<Profile> {
           _downloadUrl = url;
         });
       }
-      print(_downloadUrl);
       newImage = false;
     }
 

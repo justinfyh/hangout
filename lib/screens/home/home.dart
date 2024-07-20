@@ -38,14 +38,14 @@ class _HomeState extends State<Home> {
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 title: Text('Hangout',
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
+                    style: TextStyle(color: Colors.black, fontSize: 18)),
               ),
             ),
             SliverList(
               delegate: SliverChildListDelegate([
                 SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Column(
                       children: [
                         EventTabs(
@@ -65,7 +65,8 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         FriendSection(),
-                        ExploreSection(),
+                        ExploreSection(
+                            events: Provider.of<List<Event>?>(context) ?? []),
                       ],
                     ),
                   ),
