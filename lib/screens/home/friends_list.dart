@@ -27,9 +27,9 @@ class FriendSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+              padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
               child: Text('Friends',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
             SizedBox(
               height: 120,

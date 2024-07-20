@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/components/search_bar.dart';
 import 'package:hangout/screens/friends/add_friends.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,14 @@ class _ListFriendsState extends State<ListFriends> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Friends', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
+        title: CustomSearchBar(
+          onChanged: (value) {
+            setState(() {
+              searchQuery = value.toLowerCase();
+            });
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.person_add, color: Colors.black),
@@ -40,23 +47,6 @@ class _ListFriendsState extends State<ListFriends> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value.toLowerCase();
-                });
-              },
-            ),
-          ),
           Expanded(
             child: FutureBuilder<List<UserModel>>(
               future: _fetchFriends(db, user.uid),
@@ -93,7 +83,8 @@ class _ListFriendsState extends State<ListFriends> {
                         backgroundColor: Colors.transparent,
                       ),
                       title: Text(friend.name,
-                          style: const TextStyle(fontSize: 12)),
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600)),
                       // subtitle: Text(
                       //     'Last Hangout ${timeago.format(friend.lastHangout)}',
                       //     style: TextStyle(color: Colors.grey)),

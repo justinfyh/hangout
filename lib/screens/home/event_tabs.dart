@@ -15,7 +15,7 @@ class EventTabs extends StatelessWidget {
         children: [
           _buildChip('My Events', 0),
           _buildChip('Friend\'s Events', 1),
-          _buildChip('Local', 2),
+          _buildChip('Local Events', 2),
         ],
       ),
     );
@@ -30,13 +30,14 @@ class EventTabs extends StatelessWidget {
         label: Text(
           label,
           style: TextStyle(
-              color: selectedIndex == index ? Colors.white : Colors.white,
-              fontSize: 12),
+              color: selectedIndex == index ? Colors.white : Colors.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w600),
         ),
         backgroundColor:
-            selectedIndex == index ? Color(0xffFF7A00) : Colors.grey,
+            selectedIndex == index ? Color(0xffFF7A00) : Color(0xffeeeeee),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), // Decreased border radius
+          borderRadius: BorderRadius.circular(20), // Decreased border radius
           side: BorderSide(style: BorderStyle.none), // Removed border
         ),
       ),

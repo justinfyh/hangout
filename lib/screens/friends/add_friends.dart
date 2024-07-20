@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/components/search_bar.dart';
 import 'package:hangout/services/database.dart';
 
 class AddFriends extends StatefulWidget {
@@ -34,7 +35,11 @@ class _AddFriendsState extends State<AddFriends> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Add Friends', style: TextStyle(color: Colors.black)),
+        title: CustomSearchBar(
+          onChanged: (value) {
+            searchUsers(value);
+          },
+        ),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -42,14 +47,7 @@ class _AddFriendsState extends State<AddFriends> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Search for friends...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: searchUsers,
-            ),
+            // child: TextField(
           ),
           Expanded(
             child: searchResults.isEmpty

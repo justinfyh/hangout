@@ -9,15 +9,20 @@ class ExploreSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final event = events[0];
+    // Check if events list is empty
+    if (events.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // If there are events, display the first event
     return GestureDetector(
       onTap: () {
-        // Navigate to event page passing eventid
+        // Navigate to event page passing eventId
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => EventDetailsPage(
-              eventId: event.eventId,
+              eventId: events[0].eventId,
             ),
           ),
         );
@@ -29,7 +34,7 @@ class ExploreSection extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: Text(
               'Explore',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           const Padding(
@@ -41,7 +46,6 @@ class ExploreSection extends StatelessWidget {
           ),
           Container(
             decoration: BoxDecoration(
-              // Border color and width
               borderRadius: BorderRadius.circular(15.0), // Border radius
             ),
             child: ClipRRect(
@@ -49,12 +53,12 @@ class ExploreSection extends StatelessWidget {
                   BorderRadius.circular(15.0), // Border radius for image
               child: Stack(
                 children: [
-                  Image.network(event.imageUrl),
+                  Image.network(events[0].imageUrl),
                   Positioned(
                     top: 10, // Position the text at the top
                     left: 10, // Position the text from the left
                     child: Text(
-                      event.name,
+                      events[0].name,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,

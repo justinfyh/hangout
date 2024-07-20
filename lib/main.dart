@@ -52,11 +52,13 @@ class MainApp extends StatelessWidget {
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
-        border: OutlineInputBorder(), // Text field border
-        hintStyle: TextStyle(color: Colors.orange),
+        border: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Color(0xffeeeeee))), // Text field border
+        hintStyle: TextStyle(),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: Color(0xffFF7A00), width: 2.0), // Focused border color
+          borderSide:
+              BorderSide(color: Color(0xffFF7A00)), // Focused border color
         ),
         // Add more text field styles as needed
       ),
