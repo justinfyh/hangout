@@ -6,7 +6,6 @@ import 'package:hangout/screens/home/event_list.dart';
 import 'package:hangout/screens/home/event_month.dart';
 import 'package:hangout/screens/home/event_tabs.dart';
 import 'package:hangout/screens/home/friends_list.dart';
-import 'package:hangout/services/auth.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -18,13 +17,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserIdentity?>(context);
-    // final userData = Provider.of<UserModel?>(context);
     final String uid = user!.uid;
 
     return StreamProvider<List<Event>?>.value(
@@ -69,17 +66,6 @@ class _HomeState extends State<Home> {
                         ),
                         FriendSection(),
                         ExploreSection(),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              await _auth.signOut();
-                            },
-                            child: const Text(
-                              'Log Out',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),

@@ -1,13 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
+import 'package:hangout/screens/profile/settings.dart';
 import 'package:hangout/services/database.dart';
 import 'package:hangout/services/storage.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
+  const Profile({super.key});
+
   @override
-  _ProfileState createState() => _ProfileState();
+  State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
@@ -23,11 +26,14 @@ class _ProfileState extends State<Profile> {
     final userData = Provider.of<UserModel?>(context);
 
     final DatabaseService db = DatabaseService(uid: uid);
-
     final StorageService storage = StorageService();
 
+    if (userData == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     final TextEditingController nameController =
-        TextEditingController(text: userData!.name);
+        TextEditingController(text: userData.name);
     final TextEditingController emailController =
         TextEditingController(text: userData.email);
     final TextEditingController bioController =
@@ -51,6 +57,7 @@ class _ProfileState extends State<Profile> {
           _downloadUrl = url;
         });
       }
+      print(_downloadUrl);
       newImage = false;
     }
 
@@ -60,6 +67,18 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text('Edit Profile'),
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings,
+                color: Colors.black), // Add friend icon
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Settings()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
