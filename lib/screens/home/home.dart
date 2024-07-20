@@ -40,14 +40,15 @@ class _HomeState extends State<Home> {
               elevation: 0,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Text('Hangout', style: TextStyle(color: Colors.black)),
+                title: Text('Hangout',
+                    style: TextStyle(color: Colors.black, fontSize: 16)),
               ),
             ),
             SliverList(
               delegate: SliverChildListDelegate([
                 SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Column(
                       children: [
                         EventTabs(

@@ -86,12 +86,12 @@ class EventDetailsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           event.name,
                           style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         FutureBuilder<UserModel?>(
                           future: db.getUserById(event.ownerUid),
@@ -102,9 +102,20 @@ class EventDetailsPage extends StatelessWidget {
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
-                              return Text(
-                                '${event.isPrivate ? ('Private') : ('Public')} · Event by ${snapshot.data!.name}',
-                                style: const TextStyle(color: Colors.grey),
+                              return Text.rich(
+                                TextSpan(
+                                  text: event.isPrivate ? 'Private' : 'Public',
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 14),
+                                  children: <TextSpan>[
+                                    const TextSpan(text: ' · Event by '),
+                                    TextSpan(
+                                      text: snapshot.data!.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               );
                             } else {
                               return const Text('No data found');
@@ -204,6 +215,9 @@ class SelectStatusButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Theme.of(context).primaryColor, // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0), // Corrected border radius
+        ),
       ),
       onPressed: () {
         showModalBottomSheet(

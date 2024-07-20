@@ -21,7 +21,7 @@ class EventList extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 250,
+      height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: events.length,
@@ -51,8 +51,8 @@ class EventList extends StatelessWidget {
                 children: [
                   const SizedBox(height: 8),
                   Container(
-                    width: 150,
-                    height: 150,
+                    width: 130,
+                    height: 130,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -88,7 +88,7 @@ class EventList extends StatelessWidget {
                   Text(event.name,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   Text(event.dateTime,
-                      style: const TextStyle(color: Colors.grey)),
+                      style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 ],
               ),
             ),

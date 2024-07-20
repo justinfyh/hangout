@@ -11,7 +11,7 @@ class EventTabs extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildChip('My Events', 0),
           _buildChip('Friend\'s Events', 1),
@@ -30,7 +30,8 @@ class EventTabs extends StatelessWidget {
         label: Text(
           label,
           style: TextStyle(
-              color: selectedIndex == index ? Colors.white : Colors.white),
+              color: selectedIndex == index ? Colors.white : Colors.white,
+              fontSize: 12),
         ),
         backgroundColor:
             selectedIndex == index ? Color(0xffFF7A00) : Colors.grey,

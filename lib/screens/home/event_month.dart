@@ -9,8 +9,8 @@ class MonthlyEvents extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text('This Month',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Text('July 2024', style: TextStyle(color: Colors.grey)),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text('July 2024', style: TextStyle(color: Colors.grey, fontSize: 12)),
       ],
     );
   }

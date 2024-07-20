@@ -27,24 +27,24 @@ class FriendSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
               child: Text('Friends',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ),
             SizedBox(
-              height: 135,
+              height: 120,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: friends.length,
                 itemBuilder: (context, index) {
                   UserModel friend = friends[index];
                   return Container(
-                    width: 80,
+                    width: 60,
                     margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Column(
                       children: [
                         CircleAvatar(
-                          radius: 50,
+                          radius: 40,
                           backgroundImage: friend.profileImageUrl.isNotEmpty
                               ? NetworkImage(friend.profileImageUrl)
                               : const AssetImage('assets/images/mascot.png'),

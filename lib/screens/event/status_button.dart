@@ -33,7 +33,7 @@ class GoingButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
           decoration: BoxDecoration(
             color: const Color(0xffFF7A00), // Custom color
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(6.0),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
