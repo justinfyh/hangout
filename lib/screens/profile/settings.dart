@@ -19,6 +19,9 @@ class Settings extends StatelessWidget {
               await auth.signOut();
               if (context.mounted) Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12))),
             child: const Text(
               "Log Out",
               style: TextStyle(color: Colors.white),

@@ -60,7 +60,7 @@ class EventList extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
                         imageUrl,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) return child;
