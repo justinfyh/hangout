@@ -80,8 +80,14 @@ class _NotificationsState extends State<Notifications> {
                   radius: 30,
                   backgroundImage: NetworkImage(friend.profileImageUrl),
                 ),
-                title: Text(friend.name),
-                subtitle: const Text('sent you a friend request'),
+                title: Text(
+                  friend.name,
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                subtitle: const Text(
+                  'wants to be your friend',
+                  style: TextStyle(fontSize: 12),
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -91,21 +97,36 @@ class _NotificationsState extends State<Notifications> {
                         db.acceptFriendRequest(uid, friend.uid);
                       },
                       style: ElevatedButton.styleFrom(
-                          // primary: Colors.orange,
-                          // onPrimary: Colors.white,
-                          ),
-                      child: const Text('Accept'),
+                        // primary: Colors.orange,
+                        // onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(12.0), // Border radius
+                        ),
+                      ),
+                      child: const Text(
+                        'Accept',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                     OutlinedButton(
                       onPressed: () {
                         // Handle delete action
                         db.declineFriendRequest(uid, friend.uid);
                       },
                       style: OutlinedButton.styleFrom(
-                          // primary: Colors.grey,
-                          ),
-                      child: const Text('Delete'),
+                        // primary: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(12.0), // Border radius
+                        ),
+                      ),
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ],
                 ),

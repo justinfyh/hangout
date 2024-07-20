@@ -47,6 +47,7 @@ class _ListFriendsState extends State<ListFriends> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 5),
           Expanded(
             child: FutureBuilder<List<UserModel>>(
               future: _fetchFriends(db, user.uid),

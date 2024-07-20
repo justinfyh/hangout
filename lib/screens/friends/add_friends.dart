@@ -45,10 +45,7 @@ class _AddFriendsState extends State<AddFriends> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            // child: TextField(
-          ),
+          SizedBox(height: 5),
           Expanded(
             child: searchResults.isEmpty
                 ? const Center(child: Text('No results found'))
