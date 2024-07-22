@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/event/edit_event.dart';
+import 'package:hangout/screens/event/invite_friends.dart';
+// import 'package:hangout/screens/friends/invite_friends.dart'; // Import the InviteFriendsPage
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +48,7 @@ class OwnerManageButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: const Color(0xFFFF7A00)
-            .withOpacity(1), // Orange color with 40% opacity
+            .withOpacity(1), // Orange color with 100% opacity
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -76,14 +78,21 @@ class OwnerManageButton extends StatelessWidget {
                     leading: Icon(Icons.person_add),
                     title: Text('Invite'),
                     onTap: () {
-                      // Show invite options
+                      Navigator.of(context).pop(); // Close the bottom sheet
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              InviteFriendsPage(eventId: eventId),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
                     leading: Icon(Icons.link),
                     title: Text('Copy invitation link'),
                     onTap: () {
-                      // Copy invitation link
+                      // Copy invitation link logic
                     },
                   ),
                 ],

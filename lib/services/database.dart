@@ -174,6 +174,30 @@ class DatabaseService {
     }
   }
 
+  Future<void> updateEventInvitations({
+    required String eventId,
+    required List<String> toAdd,
+    required List<String> toRemove,
+  }) async {
+    try {
+      final eventRef = eventsCollection.doc(eventId);
+
+      // Update invitations
+      await eventRef.update({
+        'invited': FieldValue.arrayUnion(toAdd),
+      });
+
+      // Remove uninvited users
+      if (toRemove.isNotEmpty) {
+        await eventRef.update({
+          'invited': FieldValue.arrayRemove(toRemove),
+        });
+      }
+    } catch (e) {
+      print('Error updating event invitations: $e');
+    }
+  }
+
   Future<void> sendMessage(String eventId, String text) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
