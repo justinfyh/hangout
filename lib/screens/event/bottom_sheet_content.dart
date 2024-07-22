@@ -30,37 +30,41 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (String status in _statuses)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedStatus = status; // Update the selected status
-                });
-                _updateStatusInDatabase(status); // Update status in database
-                Navigator.pop(context); // Close the bottom sheet
-              },
-              child: ListTile(
-                title: Text(status),
-                leading: Radio<String>(
-                  value: status,
-                  groupValue: _selectedStatus,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _selectedStatus = value!;
-                    });
-                    _updateStatusInDatabase(value!);
-                    Navigator.pop(context); // Close the bottom sheet
-                  },
+    return ClipRRect(
+      borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.0)), // Adjust the radius as needed
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (String status in _statuses)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedStatus = status; // Update the selected status
+                  });
+                  _updateStatusInDatabase(status); // Update status in database
+                  Navigator.pop(context); // Close the bottom sheet
+                },
+                child: ListTile(
+                  title: Text(status),
+                  leading: Radio<String>(
+                    value: status,
+                    groupValue: _selectedStatus,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _selectedStatus = value!;
+                      });
+                      _updateStatusInDatabase(value!);
+                      Navigator.pop(context); // Close the bottom sheet
+                    },
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

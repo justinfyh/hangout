@@ -102,6 +102,7 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                           fontSize: 14, fontWeight: FontWeight.w600)),
                   trailing: Checkbox(
                     value: selectedFriends.contains(friend),
+                    activeColor: Color(0xffFF7A00),
                     onChanged: (bool? selected) {
                       setState(() {
                         if (selected == true) {
