@@ -64,7 +64,10 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       backgroundColor: Colors.white, // Set background color here
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text(
+          'Profile',
+          style: TextStyle(fontSize: 18),
+        ),
         backgroundColor: Colors.white,
         actions: [
           IconButton(
