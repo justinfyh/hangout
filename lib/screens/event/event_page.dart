@@ -26,6 +26,7 @@ class EventDetailsPage extends StatelessWidget {
           return const Center(child: Text('Event not found'));
         } else {
           final event = eventSnapshot.data!;
+          final isOwner = event.ownerUid == user.uid;
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -125,7 +126,10 @@ class EventDetailsPage extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 10),
-                        SelectStatusButton(event: event, userId: user.uid),
+                        if (isOwner)
+                          OwnerManageButton(eventId: eventId)
+                        else
+                          SelectStatusButton(event: event, userId: user.uid),
                         const SizedBox(height: 10),
                         Row(
                           children: [
@@ -183,11 +187,69 @@ class EventDetailsPage extends StatelessWidget {
   }
 }
 
+class OwnerManageButton extends StatelessWidget {
+  final String eventId;
+
+  const OwnerManageButton({required this.eventId});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return BottomSheet(
+              onClosing: () {},
+              builder: (BuildContext context) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.edit),
+                      title: Text('Edit'),
+                      onTap: () {
+                        // Navigate to the edit event page
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.person_add),
+                      title: Text('Invite'),
+                      onTap: () {
+                        // Show invite options
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.link),
+                      title: Text('Copy invitation link'),
+                      onTap: () {
+                        // Copy invitation link
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      },
+      child: const Text('Manage'),
+    );
+  }
+}
+
 class SelectStatusButton extends StatelessWidget {
   final Event event;
   final String userId;
 
-  SelectStatusButton({required this.event, required this.userId});
+  const SelectStatusButton({required this.event, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +290,7 @@ class BottomSheetContent extends StatefulWidget {
   final String userId;
   final String currentStatus;
 
-  BottomSheetContent({
+  const BottomSheetContent({
     required this.eventId,
     required this.userId,
     required this.currentStatus,
@@ -291,11 +353,8 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
       await db.setGoingEvent(widget.userId, widget.eventId);
     } else if (status == 'Interested') {
       await db.setInterestedEvent(widget.userId, widget.eventId);
-    } else {
+    } else if (status == 'Can\'t go') {
       await db.setNotGoingEvent(widget.userId, widget.eventId);
     }
-
-    // Close the bottom sheet after updating the status
-    Navigator.pop(context);
   }
 }
