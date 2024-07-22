@@ -151,6 +151,29 @@ class DatabaseService {
     }
   }
 
+  Future<void> updateEvent(
+    String eventId,
+    String eventName,
+    String dateTime,
+    String location,
+    String details,
+    String imageUrl,
+    bool isPrivate,
+  ) async {
+    try {
+      await eventsCollection.doc(eventId).update({
+        'event_name': eventName,
+        'date_time': dateTime,
+        'location': location,
+        'details': details,
+        'image_url': imageUrl,
+        'is_private': isPrivate,
+      });
+    } catch (e) {
+      print("Failed to update event: $e");
+    }
+  }
+
   Future<void> sendMessage(String eventId, String text) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
