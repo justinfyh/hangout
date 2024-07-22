@@ -4,6 +4,9 @@ import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/event/group_chat.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
+import 'package:hangout/screens/event/owner_manage_button.dart';
+import 'package:hangout/screens/event/select_status_button.dart';
+import 'package:hangout/screens/event/bottom_sheet_content.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final String eventId;
@@ -36,6 +39,7 @@ class EventDetailsPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Event Image and Details
                   Stack(
                     children: [
                       event.imageUrl.isNotEmpty
@@ -184,177 +188,5 @@ class EventDetailsPage extends StatelessWidget {
         }
       },
     );
-  }
-}
-
-class OwnerManageButton extends StatelessWidget {
-  final String eventId;
-
-  const OwnerManageButton({required this.eventId});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return BottomSheet(
-              onClosing: () {},
-              builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.edit),
-                      title: Text('Edit'),
-                      onTap: () {
-                        // Navigate to the edit event page
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.person_add),
-                      title: Text('Invite'),
-                      onTap: () {
-                        // Show invite options
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.link),
-                      title: Text('Copy invitation link'),
-                      onTap: () {
-                        // Copy invitation link
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        );
-      },
-      child: const Text('Manage'),
-    );
-  }
-}
-
-class SelectStatusButton extends StatelessWidget {
-  final Event event;
-  final String userId;
-
-  const SelectStatusButton({required this.event, required this.userId});
-
-  @override
-  Widget build(BuildContext context) {
-    String currentStatus = 'Select Status';
-    if (event.going.contains(userId)) {
-      currentStatus = 'Going';
-    } else if (event.interested.contains(userId)) {
-      currentStatus = 'Interested';
-    }
-
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).primaryColor, // Text color
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0), // Corrected border radius
-        ),
-      ),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return BottomSheetContent(
-              eventId: event.eventId,
-              userId: userId,
-              currentStatus: currentStatus,
-            );
-          },
-        );
-      },
-      child: Text(currentStatus),
-    );
-  }
-}
-
-class BottomSheetContent extends StatefulWidget {
-  final String eventId;
-  final String userId;
-  final String currentStatus;
-
-  const BottomSheetContent({
-    required this.eventId,
-    required this.userId,
-    required this.currentStatus,
-  });
-
-  @override
-  _BottomSheetContentState createState() => _BottomSheetContentState();
-}
-
-class _BottomSheetContentState extends State<BottomSheetContent> {
-  String? _selectedStatus;
-  final List<String> _statuses = ['Going', 'Interested', 'Can\'t go'];
-  late DatabaseService db;
-
-  @override
-  void initState() {
-    super.initState();
-    db = DatabaseService(uid: widget.userId);
-    _selectedStatus = widget.currentStatus;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (String status in _statuses)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedStatus = status; // Update the selected status
-                });
-                _updateStatusInDatabase(status); // Update status in database
-              },
-              child: ListTile(
-                title: Text(status),
-                leading: Radio<String>(
-                  value: status,
-                  groupValue: _selectedStatus,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _selectedStatus = value!;
-                    });
-                    _updateStatusInDatabase(
-                        value!); // Update status in database
-                  },
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  void _updateStatusInDatabase(String status) async {
-    if (status == 'Going') {
-      await db.setGoingEvent(widget.userId, widget.eventId);
-    } else if (status == 'Interested') {
-      await db.setInterestedEvent(widget.userId, widget.eventId);
-    } else if (status == 'Can\'t go') {
-      await db.setNotGoingEvent(widget.userId, widget.eventId);
-    }
   }
 }
