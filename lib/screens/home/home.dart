@@ -30,59 +30,49 @@ class _HomeState extends State<Home> {
       initialData: null,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              floating: true,
-              elevation: 0,
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.only(
+                    top: 30), // Adjust padding for spacing
+                child: Center(
+                  child: SvgPicture.asset(
+                    'assets/icons/logo-full.svg',
+                    width: 130,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Column(
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/logo-full.svg',
-                      width: 150,
+                    EventTabs(
+                      onTabSelected: (index) {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                      selectedIndex: selectedIndex,
+                    ),
+                    const MonthlyEvents(),
+                    EventList(
+                      events: _filterEvents(
+                        Provider.of<List<Event>?>(context) ?? [],
+                        selectedIndex,
+                        uid,
+                      ),
+                    ),
+                    FriendSection(),
+                    ExploreSection(
+                      events: Provider.of<List<Event>?>(context) ?? [],
                     ),
                   ],
                 ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        EventTabs(
-                          onTabSelected: (index) {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          },
-                          selectedIndex: selectedIndex,
-                        ),
-                        const MonthlyEvents(),
-                        EventList(
-                          events: _filterEvents(
-                            Provider.of<List<Event>?>(context) ?? [],
-                            selectedIndex,
-                            uid,
-                          ),
-                        ),
-                        FriendSection(),
-                        ExploreSection(
-                            events: Provider.of<List<Event>?>(context) ?? []),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
