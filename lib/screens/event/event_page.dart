@@ -6,7 +6,6 @@ import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:hangout/screens/event/owner_manage_button.dart';
 import 'package:hangout/screens/event/select_status_button.dart';
-import 'package:hangout/screens/event/bottom_sheet_content.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final String eventId;
@@ -93,35 +92,44 @@ class EventDetailsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          event.name,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            event.name,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                         ),
                         FutureBuilder<UserModel?>(
                           future: db.getUserById(event.ownerUid),
                           builder: (BuildContext context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return const CircularProgressIndicator(
+                                color: Color(0xFFFF7A00),
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
-                              return Text.rich(
-                                TextSpan(
-                                  text: event.isPrivate ? 'Private' : 'Public',
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 14),
-                                  children: <TextSpan>[
-                                    const TextSpan(text: ' · Event by '),
-                                    TextSpan(
-                                      text: snapshot.data!.name,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                              return Align(
+                                alignment: Alignment.center,
+                                child: Text.rich(
+                                  TextSpan(
+                                    text:
+                                        event.isPrivate ? 'Private' : 'Public',
+                                    style: const TextStyle(
+                                        color: Colors.grey, fontSize: 14),
+                                    children: <TextSpan>[
+                                      const TextSpan(text: ' · Event by '),
+                                      TextSpan(
+                                        text: snapshot.data!.name,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             } else {
@@ -139,7 +147,12 @@ class EventDetailsPage extends StatelessWidget {
                           children: [
                             const Icon(Icons.location_on),
                             const SizedBox(width: 5),
-                            Text(event.location),
+                            Expanded(
+                              child: Text(
+                                event.location,
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -147,8 +160,10 @@ class EventDetailsPage extends StatelessWidget {
                           children: [
                             const Icon(Icons.check_circle_outline),
                             const SizedBox(width: 5),
-                            Text(
-                                '${event.going.length} going · ${event.interested.length} interested'),
+                            Expanded(
+                              child: Text(
+                                  '${event.going.length} going · ${event.interested.length} interested'),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 20),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/event/edit_event.dart';
 import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
-// import 'edit_event_page.dart'; // Import the EditEventPage
 
 class OwnerManageButton extends StatelessWidget {
   final String eventId;
@@ -47,51 +45,63 @@ class OwnerManageButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: const Color(0xFFFF7A00)
+            .withOpacity(1), // Orange color with 40% opacity
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
+        minimumSize:
+            Size(double.infinity, 30), // Adjusted height to 48 for consistency
+        padding: EdgeInsets.symmetric(vertical: 8), // Adjusted padding
       ),
       onPressed: () {
         showModalBottomSheet(
           context: context,
+          backgroundColor:
+              Colors.white, // Set bottom sheet background color to white
           builder: (BuildContext context) {
-            return BottomSheet(
-              onClosing: () {},
-              builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.edit),
-                      title: Text('Edit'),
-                      onTap: () {
-                        Navigator.of(context).pop(); // Close the bottom sheet
-                        _navigateToEditPage(context, eventId);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.person_add),
-                      title: Text('Invite'),
-                      onTap: () {
-                        // Show invite options
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.link),
-                      title: Text('Copy invitation link'),
-                      onTap: () {
-                        // Copy invitation link
-                      },
-                    ),
-                  ],
-                );
-              },
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text('Edit'),
+                    onTap: () {
+                      Navigator.of(context).pop(); // Close the bottom sheet
+                      _navigateToEditPage(context, eventId);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.person_add),
+                    title: Text('Invite'),
+                    onTap: () {
+                      // Show invite options
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.link),
+                    title: Text('Copy invitation link'),
+                    onTap: () {
+                      // Copy invitation link
+                    },
+                  ),
+                ],
+              ),
             );
           },
         );
       },
-      child: const Text('Manage'),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Manage',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          Icon(Icons.arrow_drop_down), // Dropdown icon
+        ],
+      ),
     );
   }
 }

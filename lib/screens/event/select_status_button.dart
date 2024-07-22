@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/screens/event/bottom_sheet_content.dart';
-// import 'package:hangout/widgets/bottom_sheet_content.dart';
 
 class SelectStatusButton extends StatelessWidget {
   final Event event;
@@ -18,27 +17,40 @@ class SelectStatusButton extends StatelessWidget {
       currentStatus = 'Interested';
     }
 
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+    return SizedBox(
+      width: double.infinity, // Span the whole width
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xFFFF7A00)
+              .withOpacity(1), // Background color with 40% opacity
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return BottomSheetContent(
+                eventId: event.eventId,
+                userId: userId,
+                currentStatus: currentStatus,
+              );
+            },
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              currentStatus,
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            Icon(Icons.arrow_drop_down, color: Colors.white), // Drop-down icon
+          ],
         ),
       ),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return BottomSheetContent(
-              eventId: event.eventId,
-              userId: userId,
-              currentStatus: currentStatus,
-            );
-          },
-        );
-      },
-      child: Text(currentStatus),
     );
   }
 }

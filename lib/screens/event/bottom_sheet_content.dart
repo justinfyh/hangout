@@ -43,6 +43,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                   _selectedStatus = status; // Update the selected status
                 });
                 _updateStatusInDatabase(status); // Update status in database
+                Navigator.pop(context); // Close the bottom sheet
               },
               child: ListTile(
                 title: Text(status),
@@ -53,8 +54,8 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                     setState(() {
                       _selectedStatus = value!;
                     });
-                    _updateStatusInDatabase(
-                        value!); // Update status in database
+                    _updateStatusInDatabase(value!);
+                    Navigator.pop(context); // Close the bottom sheet
                   },
                 ),
               ),
