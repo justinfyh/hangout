@@ -6,6 +6,7 @@ import 'package:hangout/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:hangout/screens/event/owner_manage_button.dart';
 import 'package:hangout/screens/event/select_status_button.dart';
+import 'package:url_launcher/url_launcher.dart'; // Make sure to import url_launcher
 
 class EventDetailsPage extends StatelessWidget {
   final String eventId;
@@ -100,7 +101,7 @@ class EventDetailsPage extends StatelessWidget {
                           child: Text(
                             event.name,
                             style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                         ),
                         FutureBuilder<UserModel?>(
@@ -151,20 +152,37 @@ class EventDetailsPage extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 event.location,
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16),
                               ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.open_in_new),
+                              onPressed: () async {
+                                final encodedLocation =
+                                    Uri.encodeComponent(event.location);
+                                final url = Uri.parse(
+                                    'https://www.google.com/maps/search/?api=1&query=${encodedLocation}');
+                                // if (await canLaunchUrl(url)) {
+                                await launchUrl(url,
+                                    mode: LaunchMode.externalApplication);
+                                // } else {
+                                //   throw 'Could not launch $url';
+                                // }
+                              },
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 0),
                         Row(
                           children: [
                             const Icon(Icons.check_circle_outline),
                             const SizedBox(width: 5),
                             Expanded(
-                              child: Text(
-                                  '${event.going.length} going · ${event.interested.length} interested'),
-                            ),
+                                child: Text(
+                              '${event.going.length} going · ${event.interested.length} interested',
+                              style: TextStyle(fontSize: 16),
+                            )),
                             IconButton(
                               icon: Icon(Icons.people),
                               onPressed: () =>
@@ -175,7 +193,7 @@ class EventDetailsPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         const Text('What to expect',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16)),
+                                fontWeight: FontWeight.bold, fontSize: 18)),
                         const SizedBox(height: 10),
                         Text(event.details),
                         const SizedBox(height: 20),

@@ -24,6 +24,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         theme: _buildTheme(Brightness.light),
         home: const DefaultTabController(length: 5, child: Wrapper()),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
