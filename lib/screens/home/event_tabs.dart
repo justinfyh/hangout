@@ -31,7 +31,7 @@ class EventTabs extends StatelessWidget {
           label,
           style: TextStyle(
               color: selectedIndex == index ? Colors.white : Colors.black,
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: FontWeight.w600),
         ),
         backgroundColor:
