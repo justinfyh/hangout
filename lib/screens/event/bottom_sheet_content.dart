@@ -60,6 +60,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                       _updateStatusInDatabase(value!);
                       Navigator.pop(context); // Close the bottom sheet
                     },
+                    activeColor: Colors.orange,
                   ),
                 ),
               ),

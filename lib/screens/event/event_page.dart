@@ -99,7 +99,7 @@ class EventDetailsPage extends StatelessWidget {
                           child: Text(
                             event.name,
                             style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         FutureBuilder<UserModel?>(
@@ -168,7 +168,8 @@ class EventDetailsPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         const Text('What to expect',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                         const SizedBox(height: 10),
                         Text(event.details),
                         const SizedBox(height: 20),

@@ -37,20 +37,20 @@ class Landing extends StatelessWidget {
                     backgroundColor:
                         const Color(0xffFF7A00), // Background color
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 60,
+                        horizontal: 50,
                         vertical:
-                            15), // Adjust padding to make the button wider and taller
+                            14), // Adjust padding to make the button wider and taller
                     shape: RoundedRectangleBorder(
                       borderRadius:
                           BorderRadius.circular(8), // Adjust the border radius
                     ),
                   ),
                   child: const Text(
-                    'Log in',
+                    'Login',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
                   ),
                 ),
                 const SizedBox(
@@ -67,7 +67,8 @@ class Landing extends StatelessWidget {
                       'Join for free',
                       style: TextStyle(
                           color: Color(0xffFF7A00),
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
                     ))
               ],
             ))));

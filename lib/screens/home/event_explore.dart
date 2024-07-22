@@ -72,6 +72,9 @@ class ExploreSection extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          )
         ],
       ),
     );

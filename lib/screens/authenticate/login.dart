@@ -117,7 +117,10 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(10))),
                     child: const Text(
                       'Login',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -161,7 +164,10 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(10))),
                     label: const Text(
                       'Continue with Google',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
                     ),
                   )
                 ],

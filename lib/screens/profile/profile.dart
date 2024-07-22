@@ -101,17 +101,15 @@ class _ProfileState extends State<Profile> {
             TextButton(
               onPressed: pickImage,
               child: const Text('Edit profile image',
-                  style: TextStyle(color: Color(0xffFF7A00), fontSize: 11)),
+                  style: TextStyle(color: Color(0xffFF7A00), fontSize: 13)),
             ),
             Text(
               userData.name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             Text(
               userData.bio,
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(height: 20),
             _buildTextField('Username', nameController),

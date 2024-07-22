@@ -86,7 +86,8 @@ class EventList extends StatelessWidget {
                     height: 6,
                   ),
                   Text(event.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold)),
                   Text(event.dateTime,
                       style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 ],
