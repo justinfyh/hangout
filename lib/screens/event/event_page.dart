@@ -29,6 +29,7 @@ class EventDetailsPage extends StatelessWidget {
         } else {
           final event = eventSnapshot.data!;
           final isOwner = event.ownerUid == user.uid;
+
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -164,6 +165,11 @@ class EventDetailsPage extends StatelessWidget {
                               child: Text(
                                   '${event.going.length} going · ${event.interested.length} interested'),
                             ),
+                            IconButton(
+                              icon: Icon(Icons.people),
+                              onPressed: () =>
+                                  _showUsersBottomSheet(context, event),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 20),
@@ -204,5 +210,96 @@ class EventDetailsPage extends StatelessWidget {
         }
       },
     );
+  }
+
+  void _showUsersBottomSheet(BuildContext context, Event event) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: FutureBuilder<Map<String, List<UserModel>>>(
+            future: _getCategorizedUsers(event),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(child: Text('No users found'));
+              } else {
+                final categorizedUsers = snapshot.data!;
+                return ListView(
+                  children: [
+                    if (categorizedUsers['Going']!.isNotEmpty)
+                      _buildCategoryList('Going', categorizedUsers['Going']!),
+                    if (categorizedUsers['Interested']!.isNotEmpty)
+                      _buildCategoryList(
+                          'Interested', categorizedUsers['Interested']!),
+                    if (event.isPrivate &&
+                        categorizedUsers['Invited']!.isNotEmpty)
+                      _buildCategoryList(
+                          'Invited', categorizedUsers['Invited']!),
+                  ],
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCategoryList(String category, List<UserModel> users) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+          child: Text(
+            category,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+        ...users
+            .map((user) => ListTile(
+                  title: Text(user.name),
+                  subtitle: Text(user.email),
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(user.profileImageUrl),
+                  ),
+                ))
+            .toList(),
+      ],
+    );
+  }
+
+  Future<Map<String, List<UserModel>>> _getCategorizedUsers(Event event) async {
+    final db = DatabaseService(uid: event.ownerUid);
+    final Map<String, List<UserModel>> categorizedUsers = {
+      'Going': [],
+      'Interested': [],
+      'Invited': [],
+    };
+
+    for (var uid in event.going) {
+      final user = await db.getUserById(uid);
+      if (user != null) categorizedUsers['Going']!.add(user);
+    }
+
+    for (var uid in event.interested) {
+      final user = await db.getUserById(uid);
+      if (user != null) categorizedUsers['Interested']!.add(user);
+    }
+
+    if (event.isPrivate) {
+      for (var uid in event.invited) {
+        final user = await db.getUserById(uid);
+        if (user != null) categorizedUsers['Invited']!.add(user);
+      }
+    }
+
+    return categorizedUsers;
   }
 }
