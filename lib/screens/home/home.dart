@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hangout/models/event.dart';
 import 'package:hangout/models/user.dart';
 import 'package:hangout/screens/home/event_explore.dart';
@@ -31,14 +32,22 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: [
-            const SliverAppBar(
+            SliverAppBar(
               backgroundColor: Colors.white,
               floating: true,
               elevation: 0,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Text('Hangout',
-                    style: TextStyle(color: Colors.black, fontSize: 18)),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/logo-full.svg',
+                      width: 150,
+                    ),
+                  ],
+                ),
               ),
             ),
             SliverList(
