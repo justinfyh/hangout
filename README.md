@@ -19,7 +19,7 @@ Hangout App is a social media application focused on events. Users can create, j
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/hangout-app.git
+    git clone https://github.com/justinfyh/hangout.git
     ```
 2. Navigate to the project directory:
     ```sh
